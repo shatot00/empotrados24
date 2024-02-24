@@ -1,4 +1,4 @@
-package com.empotrados
+package com.aplicacion
 
 import android.app.Application
 import com.facebook.react.PackageList

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "empotrados.app"
-               BlueprintName = "empotrados"
-               ReferencedContainer = "container:empotrados.xcodeproj">
+               BuildableName = "aplicacion.app"
+               BlueprintName = "aplicacion"
+               ReferencedContainer = "container:aplicacion.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "empotradosTests.xctest"
-               BlueprintName = "empotradosTests"
-               ReferencedContainer = "container:empotrados.xcodeproj">
+               BuildableName = "aplicacionTests.xctest"
+               BlueprintName = "aplicacionTests"
+               ReferencedContainer = "container:aplicacion.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "empotrados.app"
-            BlueprintName = "empotrados"
-            ReferencedContainer = "container:empotrados.xcodeproj">
+            BuildableName = "aplicacion.app"
+            BlueprintName = "aplicacion"
+            ReferencedContainer = "container:aplicacion.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "empotrados.app"
-            BlueprintName = "empotrados"
-            ReferencedContainer = "container:empotrados.xcodeproj">
+            BuildableName = "aplicacion.app"
+            BlueprintName = "aplicacion"
+            ReferencedContainer = "container:aplicacion.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
