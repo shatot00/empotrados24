@@ -9,3 +9,6 @@ https://docs.expo.dev/versions/latest/sdk/gyroscope/ Giroscopio
 https://docs.expo.dev/versions/latest/sdk/location/ GPS/Brujula
 
 https://docs.expo.dev/versions/latest/sdk/pedometer/ Pedometer
+
+Bases de datos faciles sin tener que hacer secuencias en SQL
+https://fastapi.tiangolo.com/tutorial/sql-databases/

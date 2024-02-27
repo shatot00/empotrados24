@@ -1,18 +1,61 @@
 from sqlalchemy.orm import Session
+from . import models, schemas
 
-from . import models
+# def add_information_accelerometer(db: Session, accelerometer: schemas.Accelerometer):
+#     # fake_hashed_password = user.password + "notreallyhashed"
+#     # db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+#     # db.add(db_user)
+#     # db.commit()
+#     # db.refresh(db_user)
+#     return db_user
 
-# TODO : Add the CRUD operations for the database
+# def add_information_compass(db: Session, compass: schemas.Compass):
+#     # fake_hashed_password = user.password + "notreallyhashed"
+#     # db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+#     # db.add(db_user)
+#     # db.commit()
+#     # db.refresh(db_user)
+#     return db_user
 
-def get_token(db: Session, token: str):
-    return db.query(models.Team).filter(models.Team.token == token).first()
+# def add_information_gps(db: Session, gps: schemas.GPS):
+#     # fake_hashed_password = user.password + "notreallyhashed"
+#     # db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+#     # db.add(db_user)
+#     # db.commit()
+#     # db.refresh(db_user)
+#     return db_user
 
-def get_task_token(db: Session, task: str, token: str):
-    return db.query(models.Team).filter(models.Team.task == task, models.Team.token == token).first()
+# def add_information_gyroscope(db: Session, gyroscope: schemas.Gyroscope):
+#     # fake_hashed_password = user.password + "notreallyhashed"
+#     # db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+#     # db.add(db_user)
+#     # db.commit()
+#     # db.refresh(db_user)
+#     return db_user
 
-def add_round_token(db: Session, task: str, token: str):
-    db.query(models.Team).filter(models.Team.task == task, models.Team.token == token).update({models.Team.round: models.Team.round + 1})
-    db.commit()
+# def add_information_pedometer(db: Session, pedometer: schemas.Pedometer):
+#     # fake_hashed_password = user.password + "notreallyhashed"
+#     # db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
+#     # db.add(db_user)
+#     # db.commit()
+#     # db.refresh(db_user)
+#     return db_user
 
-def get_round_token(db: Session, task: str, token: str):
-    return db.query(models.Team).filter(models.Team.task == task, models.Team.token == token).first().round
+# def get_user(db: Session, user_id: int):
+#     return db.query(models.User).filter(models.User.id == user_id).first()
+
+# def get_user_by_email(db: Session, email: str):
+#     return db.query(models.User).filter(models.User.email == email).first()
+
+# def get_users(db: Session, skip: int = 0, limit: int = 100):
+#     return db.query(models.User).offset(skip).limit(limit).all()
+
+# def get_items(db: Session, skip: int = 0, limit: int = 100):
+#     return db.query(models.Item).offset(skip).limit(limit).all()
+
+# def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
+#     db_item = models.Item(**item.dict(), owner_id=user_id)
+#     db.add(db_item)
+#     db.commit()
+#     db.refresh(db_item)
+#     return db_item
