@@ -13,6 +13,8 @@ https://docs.expo.dev/versions/latest/sdk/pedometer/ Pedometer
 Bases de datos faciles sin tener que hacer secuencias en SQL
 https://fastapi.tiangolo.com/tutorial/sql-databases/
 
+http://localhost:8000/docs Para hacer peticiones
+
 Si usais VSCode os recomiendo estas extensiones:
 Pylance (ms-python.vscode-pylance)
 Github Copilot (GitHub.copilot)

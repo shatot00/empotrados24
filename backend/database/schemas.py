@@ -11,10 +11,10 @@ class Accelerometer(BaseModel):
         z (str): The acceleration value in the z-axis.
     """
 
-    time: str
-    x: str
-    y: str
-    z: str
+    time: int
+    x: float
+    y: float
+    z: float
 
     class ConfigDict:
         from_attributes = True
@@ -28,8 +28,8 @@ class Compass(BaseModel):
         direction (str): The direction indicated by the compass.
     """
 
-    time: str
-    direction: str
+    time: int
+    direction: float
 
     class ConfigDict:
         from_attributes = True
@@ -44,9 +44,9 @@ class GPS(BaseModel):
         longitude (str): The longitude coordinate.
     """
 
-    time: str
-    latitude: str
-    longitude: str
+    time: int
+    latitude: float
+    longitude: float
 
     class ConfigDict:
         from_attributes = True
@@ -62,10 +62,10 @@ class Gyroscope(BaseModel):
         z (str): The z-axis value of the gyroscope reading.
     """
 
-    time: str
-    x: str
-    y: str
-    z: str
+    time: int
+    x: float
+    y: float
+    z: float
 
     class ConfigDict:
         from_attributes = True
@@ -79,8 +79,8 @@ class Pedometer(BaseModel):
         steps (str): The number of steps taken.
     """
 
-    time: str
-    steps: str
+    time: int
+    steps: int
 
     class ConfigDict:
         from_attributes = True
