@@ -55,6 +55,8 @@ export default function App() {
       <Text style={styles.text}>x: {dataAccelero.x}</Text>
       <Text style={styles.text}>y: {dataAccelero.y}</Text>
       <Text style={styles.text}>z: {dataAccelero.z}</Text>
+      <Text style={styles.text}> </Text>
+      <Text style={styles.text}>Gyroscope: </Text>
       
       <Text style={styles.text}>x: {dataGyro.x}</Text>
       <Text style={styles.text}>y: {dataGyro.y}</Text>
