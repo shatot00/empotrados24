@@ -16,8 +16,8 @@ class Accelerometer(BaseModel):
     y: str
     z: str
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True
 
 class Compass(BaseModel):
     """
@@ -31,8 +31,8 @@ class Compass(BaseModel):
     time: str
     direction: str
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True
 
 class GPS(BaseModel):
     """
@@ -48,8 +48,8 @@ class GPS(BaseModel):
     latitude: str
     longitude: str
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True
 
 class Gyroscope(BaseModel):
     """
@@ -67,8 +67,8 @@ class Gyroscope(BaseModel):
     y: str
     z: str
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True
 
 class Pedometer(BaseModel):
     """
@@ -82,5 +82,5 @@ class Pedometer(BaseModel):
     time: str
     steps: str
 
-    class Config:
-        orm_mode = True
+    class ConfigDict:
+        from_attributes = True

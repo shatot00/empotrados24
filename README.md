@@ -12,3 +12,9 @@ https://docs.expo.dev/versions/latest/sdk/pedometer/ Pedometer
 
 Bases de datos faciles sin tener que hacer secuencias en SQL
 https://fastapi.tiangolo.com/tutorial/sql-databases/
+
+Si usais VSCode os recomiendo estas extensiones:
+Pylance (ms-python.vscode-pylance)
+Github Copilot (GitHub.copilot)
+Expo Tools(expo.vscode-expo-tools)
+SQLite(alexcvzz.vscode-sqlite)
