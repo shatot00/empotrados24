@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Generador de Gráficas</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+    <h1>Generador de Gráficas</h1>
+    <button onclick="reloadPage()">Actualizar Página</button>
+    <a href="/compass"><button>Ir a Brújula</button></a> <!-- Botón para ir a la página brujula -->
+    <div id="graph"></div>
+
+    <script>
+        // Obtener los datos pasados desde Python
+        var tiempos = JSON.parse('{{ times | tojson | safe }}');
+        var x_values = JSON.parse('{{ x_values | tojson | safe }}');
+        var y_values = JSON.parse('{{ y_values | tojson | safe }}');
+        var z_values = JSON.parse('{{ z_values | tojson | safe }}');
+
+        // Crear los trazos para cada conjunto de datos
+        var trace_x = {
+            x: tiempos,
+            y: x_values,
+            mode: 'lines',
+            name: 'X'
+        };
+
+        var trace_y = {
+            x: tiempos,
+            y: y_values,
+            mode: 'lines',
+            name: 'Y'
+        };
+
+        var trace_z = {
+            x: tiempos,
+            y: z_values,
+            mode: 'lines',
+            name: 'Z'
+        };
+
+        var data = [trace_x, trace_y, trace_z];
+
+        // Configurar el diseño del gráfico
+        var layout = {
+            title: 'Datos del acelerómetro',
+            xaxis: {
+                title: 'Tiempo'
+            },
+            yaxis: {
+                title: 'Valor'
+            }
+        };
+
+        // Crear el gráfico
+        Plotly.newPlot('graph', data, layout);
+    </script>
+</body>
+
+</html>
