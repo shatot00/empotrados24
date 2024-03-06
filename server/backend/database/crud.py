@@ -1,8 +1,9 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
+from datetime import datetime
 
 def add_information_accelerometer(db: Session, accelerometer: schemas.Accelerometer):
-    db_accelerometer = models.Accelerometer(time=accelerometer.time, x=accelerometer.x, y=accelerometer.y, z=accelerometer.z)
+    db_accelerometer = models.Accelerometer(time=datetime.now(), x=accelerometer.x, y=accelerometer.y, z=accelerometer.z)
     db.add(db_accelerometer)
     db.commit()
     db.refresh(db_accelerometer)

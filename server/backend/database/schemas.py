@@ -11,7 +11,7 @@ class Accelerometer(BaseModel):
         z (str): The acceleration value in the z-axis.
     """
 
-    time: int
+    # time: int
     x: float
     y: float
     z: float

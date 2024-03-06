@@ -33,4 +33,21 @@ SQLite(alexcvzz.vscode-sqlite)
 
 # Ejecutar el backend
 
-Solamente poner python main.py (en ese archivo esta la configuración para lanzar el servidor)
+Solamente poner *python main.py* (en ese archivo esta la configuración para lanzar el servidor)
+
+# Para que funcionen las cosas
+
+Vamos a probar con ngrok:
+https://dashboard.ngrok.com/get-started/setup/windows
+
+Descargar del link, después añadir el token y para que haga el puente de conexión y salga a la web hay que hacer lo siguiente:
+
+1. Ejecutar backend, como esta escrito antes
+2. Ejecutar ngrok, en donde nos lo hayamos descargado (lo subiré a github) con *ngrok http 8000* 8000 es el puerto donde esta FastAPI
+3. La ip que nos devuelve con Forwarding es la que utilizaremos en la aplicación
+4. Recuerdo que esta IP cambia cada vez que se ejecuta
+
+# Problemas puerto emulador
+
+1. Usar *netstat -ano | findstr :PUERTO* para ver el proceso, sustituir PUERTO por el puerto que de problemas
+2. Usar *taskkill /PID IDP /F* para matar el proceso, sustituir IDP por el proceso
