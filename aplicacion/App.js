@@ -46,11 +46,11 @@ export default function App() {
       }), 
       Gyroscope.addListener(gyroscopeData =>{
         setGyroscope(gyroscopeData);
-        sendDataGyro(dataGyro);
+        // sendDataGyro(dataGyro);
       }),
       Magnetometer.addListener(result => {
         setMagneto(result);
-        sendDataMagneto(dataMagneto);
+        // sendDataMagneto(dataMagneto);
       })
     );
   };
@@ -90,7 +90,7 @@ export default function App() {
   }
 
  //================== To Server ==================
-  const url = 'http://localhost:8000';
+  const url = 'http://127.0.0.1:8000';
 
   // ------ Accelerometer ------
   const optionsAccelero = {
@@ -100,6 +100,25 @@ export default function App() {
     },
     body: dataAccelero,
   };
+
+//   crearExamen(examen, idSubject) {
+       
+//     return fetch(this.srvUrl + "/subjects/" + idSubject + "/examst", {
+//         method: 'POST',
+//         body: JSON.stringify(examen),
+//         headers: {
+//             'Content-type': 'application/json',
+//             'accept': 'application/json'
+//         }
+//     })
+//         .then(response => this.comprobarRespuesta(response))
+//         .then(response => this.devolverRespuesta(response));
+    
+
+    
+// }
+
+
 
   const sendDataAccelero = async (dataAccelero) => {
     fetch(url + '/add_accelerometer', optionsAccelero)
@@ -118,54 +137,57 @@ export default function App() {
   };
 
   // ------ Gyroscope ------
-  const optionsGyro = {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: dataGyro,
-  };
+  // const optionsGyro = {
+  //   method: 'POST',
+  //   headers: {
+  //       'Content-Type': 'application/json',
+  //   },
+  //   body: dataGyro,
+  // };
 
-  const sendDataGyro = async (dataGyro) => {
-    fetch(url + '/add_gyroscope', optionsGyro)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error al enviar los datos al servidor');
-        }
-        return response.json();
-    })
-    .then(dataGyro => {
-        console.log('Datos enviados correctamente:', dataGyro);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-  };
+  // const sendDataGyro = async (dataGyro) => {
+  //   fetch(url + '/add_gyroscope', optionsGyro)
+  //   .then(response => {
+  //       if (!response.ok) {
+  //           throw new Error('Error al enviar los datos al servidor');
+  //       }
+  //       return response.json();
+  //   })
+  //   .then(dataGyro => {
+  //       console.log('Datos enviados correctamente:', dataGyro);
+  //   })
+  //   .catch(error => {
+  //       console.error('Error:', error);
+  //   });
+  // };
 
-  // ------ setMagneto ------
-  const optionsMagneto = {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: dataMagneto,
-  };
+  // // ------ setMagneto ------
+  // const optionsMagneto = {
+  //   method: 'POST',
+  //   headers: {
+  //       'Content-Type': 'application/json',
+  //   },
+  //   body: dataMagneto,
+  // };
 
-  const sendDataMagneto = async (dataMagneto) => {
-    fetch(url + '/add_magnetometer', optionsMagneto)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error al enviar los datos al servidor');
-        }
-        return response.json();
-    })
-    .then(dataMagneto => {
-        console.log('Datos enviados correctamente:', dataMagneto);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-  };
+  // const sendDataMagneto = async (dataMagneto) => {
+  //   fetch(url + '/add_magnetometer', optionsMagneto)
+  //   .then(response => {
+  //       if (!response.ok) {
+  //           throw new Error('Error al enviar los datos al servidor');
+  //       }
+  //       return response.json();
+  //   })
+  //   .then(dataMagneto => {
+  //       console.log('Datos enviados correctamente:', dataMagneto);
+  //   })
+  //   .catch(error => {
+  //       console.error('Error:', error);
+  //   });
+  // };
+
+  
+
   
   return (
     <View style={styles.container}>
