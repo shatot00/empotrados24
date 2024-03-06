@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Accelerometer, Gyroscope, Pedometer } from 'expo-sensors';
+import { Accelerometer, Gyroscope } from 'expo-sensors';
 
 import * as Location from 'expo-location';
 
@@ -42,12 +42,15 @@ export default function App() {
     setSubscription(
       Accelerometer.addListener(acceleroData =>{
         setAccelerometer(acceleroData);
+        sendDataAccelero(dataAccelero);
       }), 
       Gyroscope.addListener(gyroscopeData =>{
         setGyroscope(gyroscopeData);
+        sendDataGyro(dataGyro);
       }),
       Magnetometer.addListener(result => {
         setMagneto(result);
+        sendDataMagneto(dataMagneto);
       })
     );
   };
@@ -85,8 +88,85 @@ export default function App() {
   } else if (location) {
     textGPS = JSON.stringify(location);
   }
- //---------------------------------------------
 
+ //================== To Server ==================
+  const url = 'http://localhost:8000';
+
+  // ------ Accelerometer ------
+  const optionsAccelero = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: dataAccelero,
+  };
+
+  const sendDataAccelero = async (dataAccelero) => {
+    fetch(url + '/add_accelerometer', optionsAccelero)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al enviar los datos al servidor');
+        }
+        return response.json();
+    })
+    .then(dataAccelero => {
+        console.log('Datos enviados correctamente:', dataAccelero);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  };
+
+  // ------ Gyroscope ------
+  const optionsGyro = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: dataGyro,
+  };
+
+  const sendDataGyro = async (dataGyro) => {
+    fetch(url + '/add_gyroscope', optionsGyro)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al enviar los datos al servidor');
+        }
+        return response.json();
+    })
+    .then(dataGyro => {
+        console.log('Datos enviados correctamente:', dataGyro);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  };
+
+  // ------ setMagneto ------
+  const optionsMagneto = {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: dataMagneto,
+  };
+
+  const sendDataMagneto = async (dataMagneto) => {
+    fetch(url + '/add_magnetometer', optionsMagneto)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al enviar los datos al servidor');
+        }
+        return response.json();
+    })
+    .then(dataMagneto => {
+        console.log('Datos enviados correctamente:', dataMagneto);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+  };
+  
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Accelerometer: (in gs where 1g = 9.81 m/s^2)</Text>

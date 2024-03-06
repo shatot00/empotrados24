@@ -19,7 +19,7 @@ class Accelerometer(BaseModel):
     class ConfigDict:
         from_attributes = True
 
-class Compass(BaseModel):
+class Magnetometer(BaseModel):
     """
     Represents a compass reading.
 
@@ -29,7 +29,9 @@ class Compass(BaseModel):
     """
 
     time: int
-    direction: float
+    x: float
+    y: float
+    z: float
 
     class ConfigDict:
         from_attributes = True

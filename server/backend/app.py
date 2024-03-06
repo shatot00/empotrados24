@@ -45,9 +45,9 @@ async def create_accelerometer(accelerometer: schemas.Accelerometer, db: Session
     crud.add_information_accelerometer(db, accelerometer)
     return "Hola"
 
-@app.post("/add_compass")
-async def create_compass(compass: schemas.Compass, db: Session = Depends(get_db)):
-    crud.add_information_compass(db, compass)
+@app.post("/add_magnetometer")
+async def create_magnetometer(magnetometer: schemas.Magnetometer, db: Session = Depends(get_db)):
+    crud.add_information_magnetometer(db, magnetometer)
     return "Hola"
 
 @app.post("/add_gps")
@@ -69,9 +69,9 @@ async def create_pedometer(pedometer: schemas.Pedometer, db: Session = Depends(g
 async def get_accelerometer(request: Request, db: Session = Depends(get_db)):
     return crud.get_information_accelerometer(db)
 
-@app.get("/compass")
-async def get_compass(request: Request, db: Session = Depends(get_db)):
-    return crud.get_information_compass(db)
+@app.get("/magnetometer")
+async def get_magnetometer(request: Request, db: Session = Depends(get_db)):
+    return crud.get_information_magnetometer(db)
 
 @app.get("/gps")
 async def get_gps(request: Request, db: Session = Depends(get_db)):
