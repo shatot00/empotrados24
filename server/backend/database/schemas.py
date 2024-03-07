@@ -11,7 +11,7 @@ class Accelerometer(BaseModel):
         z (str): The acceleration value in the z-axis.
     """
 
-    time: int
+    # time: int
     x: float
     y: float
     z: float
@@ -19,7 +19,7 @@ class Accelerometer(BaseModel):
     class ConfigDict:
         from_attributes = True
 
-class Compass(BaseModel):
+class Magnetometer(BaseModel):
     """
     Represents a compass reading.
 
@@ -29,7 +29,9 @@ class Compass(BaseModel):
     """
 
     time: int
-    direction: float
+    x: float
+    y: float
+    z: float
 
     class ConfigDict:
         from_attributes = True

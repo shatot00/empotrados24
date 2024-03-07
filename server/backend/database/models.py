@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, DateTime
 
 from .database import Base
 
@@ -16,12 +16,12 @@ class Accelerometer(Base):
     __tablename__ = "accelerometer"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
-    time = Column(String, primary_key=False, nullable=False, index=False)
+    time = Column(DateTime, primary_key=False, nullable=False, index=False)
     x = Column(Float, primary_key=False, nullable=False, index=False)
     y = Column(Float, primary_key=False, nullable=False, index=False)
     z = Column(Float, primary_key=False, nullable=False, index=False)
 
-class Compass(Base):
+class Magnetometer(Base):
     """
     Represents a compass sensor.
 
@@ -30,11 +30,13 @@ class Compass(Base):
         time (str): The timestamp of the sensor reading.
         direction (float): The direction in degrees (0-360).
     """
-    __tablename__ = "compass"
+    __tablename__ = "magnetometer"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
-    time = Column(String, primary_key=False, nullable=False, index=False)
-    direction = Column(Float, primary_key=False, nullable=False, index=False) # N, S, E, W (heading in library)
+    time = Column(DateTime, primary_key=False, nullable=False, index=False)
+    x = Column(Float, primary_key=False, nullable=False, index=False)
+    y = Column(Float, primary_key=False, nullable=False, index=False)
+    z = Column(Float, primary_key=False, nullable=False, index=False)
 
 class GPS(Base):
     """
@@ -49,7 +51,7 @@ class GPS(Base):
     __tablename__ = "gps"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
-    time = Column(String, primary_key=False, nullable=False, index=False)
+    time = Column(DateTime, primary_key=False, nullable=False, index=False)
     latitude = Column(Float, primary_key=False, nullable=False, index=False)
     longitude = Column(Float, primary_key=False, nullable=False, index=False)
 
@@ -67,7 +69,7 @@ class Gyroscope(Base):
     __tablename__ = "gyroscope"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
-    time = Column(String, primary_key=False, nullable=False, index=False)
+    time = Column(DateTime, primary_key=False, nullable=False, index=False)
     x = Column(Float, primary_key=False, nullable=False, index=False)
     y = Column(Float, primary_key=False, nullable=False, index=False)
     z = Column(Float, primary_key=False, nullable=False, index=False)
@@ -84,5 +86,5 @@ class Pedometer(Base):
     __tablename__ = "pedometer"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
-    time = Column(String, primary_key=False, nullable=False, index=False)
+    time = Column(DateTime, primary_key=False, nullable=False, index=False)
     steps = Column(Integer, primary_key=False, nullable=False, index=False)
