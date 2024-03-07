@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Accelerometer, Gyroscope, Pedometer } from 'expo-sensors';
+import { Accelerometer, Gyroscope } from 'expo-sensors';
+import axios from 'axios';
 
 import * as Location from 'expo-location';
 
 import { Magnetometer } from 'expo-sensors';
 
 export default function App() {
-  
-  const [ dataAccelero, setAccelerometer] = useState({
+
+  const [dataAccelero, setAccelerometer] = useState({
     x: 0,
     y: 0,
     z: 0,
   });
 
-  const [ dataGyro, setGyroscope] = useState({
+  const [dataGyro, setGyroscope] = useState({
     x: 0,
     y: 0,
     z: 0,
@@ -28,26 +29,31 @@ export default function App() {
 
   const [subscription, setSubscription] = useState(null);
 
-  const _slow = () => { Accelerometer.setUpdateInterval(1000);
-                        Gyroscope.setUpdateInterval(1000);
-                        Magnetometer.setUpdateInterval(1000);
-                      }
+  const _slow = () => {
+    Accelerometer.setUpdateInterval(15000);
+    Gyroscope.setUpdateInterval(15000);
+    Magnetometer.setUpdateInterval(15000);
+  }
 
-  const _fast = () => { Accelerometer.setUpdateInterval(200);
-                        Gyroscope.setUpdateInterval(200);
-                        Magnetometer.setUpdateInterval(200);
-                      }
+  const _fast = () => {
+    Accelerometer.setUpdateInterval(5000);
+    Gyroscope.setUpdateInterval(5000);
+    Magnetometer.setUpdateInterval(5000);
+  }
 
   const _subscribe = () => {
     setSubscription(
-      Accelerometer.addListener(acceleroData =>{
+      Accelerometer.addListener(acceleroData => {
         setAccelerometer(acceleroData);
-      }), 
-      Gyroscope.addListener(gyroscopeData =>{
+        sendDataAccelero(dataAccelero);
+      }),
+      Gyroscope.addListener(gyroscopeData => {
         setGyroscope(gyroscopeData);
+        // sendDataGyro(dataGyro);
       }),
       Magnetometer.addListener(result => {
         setMagneto(result);
+        // sendDataMagneto(dataMagneto);
       })
     );
   };
@@ -65,7 +71,7 @@ export default function App() {
   useEffect(() => {
     _subscribe();
     (async () => {
-      
+
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -85,7 +91,112 @@ export default function App() {
   } else if (location) {
     textGPS = JSON.stringify(location);
   }
- //---------------------------------------------
+
+  //================== To Server ==================
+  const url = 'https://80b9-90-94-129-209.ngrok-free.app';
+
+  // // ------ Accelerometer ------
+  // const optionsAccelero = {
+  //   method: 'POST',
+  //   headers: {
+  //       'Content-Type': 'application/json',
+  //   },
+  //   body: dataAccelero,
+  // };
+
+  //   crearExamen(examen, idSubject) {
+
+  //     return fetch(this.srvUrl + "/subjects/" + idSubject + "/examst", {
+  //         method: 'POST',
+  //         body: JSON.stringify(examen),
+  //         headers: {
+  //             'Content-type': 'application/json',
+  //             'accept': 'application/json'
+  //         }
+  //     })
+  //         .then(response => this.comprobarRespuesta(response))
+  //         .then(response => this.devolverRespuesta(response));
+
+
+
+  // }
+
+  const sendDataAccelero = async (dataAccelero) => {
+    console.log('Datos enviados:', dataAccelero);
+    fetch(url + '/add_accelerometer', {
+      method: 'POST',
+      body: JSON.stringify(dataAccelero),
+      headers: {
+        'Content-type': 'application/json',
+        'accept': 'application/json'
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al enviar los datos al servidor');
+        }
+        return response.json();
+      })
+      .then(dataAccelero => {
+        console.log('Datos enviados correctamente:', dataAccelero);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
+  // ------ Gyroscope ------
+  // const optionsGyro = {
+  //   method: 'POST',
+  //   headers: {
+  //       'Content-Type': 'application/json',
+  //   },
+  //   body: dataGyro,
+  // };
+
+  // const sendDataGyro = async (dataGyro) => {
+  //   fetch(url + '/add_gyroscope', optionsGyro)
+  //   .then(response => {
+  //       if (!response.ok) {
+  //           throw new Error('Error al enviar los datos al servidor');
+  //       }
+  //       return response.json();
+  //   })
+  //   .then(dataGyro => {
+  //       console.log('Datos enviados correctamente:', dataGyro);
+  //   })
+  //   .catch(error => {
+  //       console.error('Error:', error);
+  //   });
+  // };
+
+  // // ------ setMagneto ------
+  // const optionsMagneto = {
+  //   method: 'POST',
+  //   headers: {
+  //       'Content-Type': 'application/json',
+  //   },
+  //   body: dataMagneto,
+  // };
+
+  // const sendDataMagneto = async (dataMagneto) => {
+  //   fetch(url + '/add_magnetometer', optionsMagneto)
+  //   .then(response => {
+  //       if (!response.ok) {
+  //           throw new Error('Error al enviar los datos al servidor');
+  //       }
+  //       return response.json();
+  //   })
+  //   .then(dataMagneto => {
+  //       console.log('Datos enviados correctamente:', dataMagneto);
+  //   })
+  //   .catch(error => {
+  //       console.error('Error:', error);
+  //   });
+  // };
+
+
+
 
   return (
     <View style={styles.container}>
@@ -95,7 +206,7 @@ export default function App() {
       <Text style={styles.text}>z: {dataAccelero.z}</Text>
       <Text style={styles.text}> </Text>
       <Text style={styles.text}>Gyroscope: </Text>
-      
+
       <Text style={styles.text}>Giroscopio</Text>
       <Text style={styles.text}>x: {dataGyro.x}</Text>
       <Text style={styles.text}>y: {dataGyro.y}</Text>
@@ -107,8 +218,8 @@ export default function App() {
       <Text style={styles.text}>z: {dataMagneto.z}</Text>
 
       <Text style={styles.text}>GPS</Text>
-      <Text style={styles.paragraph}>{textGPS}</Text> 
-      
+      <Text style={styles.paragraph}>{textGPS}</Text>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={subscription ? _unsubscribe : _subscribe} style={styles.button}>
           <Text>{subscription ? 'On' : 'Off'}</Text>
@@ -119,7 +230,7 @@ export default function App() {
         <TouchableOpacity onPress={_fast} style={styles.button}>
           <Text>Fast</Text>
         </TouchableOpacity>
-      </View>      
+      </View>
     </View>
   );
 }

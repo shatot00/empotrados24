@@ -1,19 +1,20 @@
 from sqlalchemy.orm import Session
 from . import models, schemas
+from datetime import datetime
 
 def add_information_accelerometer(db: Session, accelerometer: schemas.Accelerometer):
-    db_accelerometer = models.Accelerometer(time=accelerometer.time, x=accelerometer.x, y=accelerometer.y, z=accelerometer.z)
+    db_accelerometer = models.Accelerometer(time=datetime.now(), x=accelerometer.x, y=accelerometer.y, z=accelerometer.z)
     db.add(db_accelerometer)
     db.commit()
     db.refresh(db_accelerometer)
     return db_accelerometer
 
-def add_information_compass(db: Session, compass: schemas.Compass):
-    db_compass = models.Compass(time=compass.time, direction=compass.direction)
-    db.add(db_compass)
+def add_information_magnetometer(db: Session, magnetometer: schemas.Magnetometer):
+    db_magnetometer = models.Magnetometer(time=magnetometer.time, x=magnetometer.x, y=magnetometer.y, z=magnetometer.z)
+    db.add(db_magnetometer)
     db.commit()
-    db.refresh(db_compass)
-    return db_compass
+    db.refresh(db_magnetometer)
+    return db_magnetometer
 
 def add_information_gps(db: Session, gps: schemas.GPS):
     db_gps = models.GPS(time=gps.time, latitude=gps.latitude, longitude=gps.longitude)
@@ -39,8 +40,8 @@ def add_information_pedometer(db: Session, pedometer: schemas.Pedometer):
 def get_information_accelerometer(db: Session):
     return db.query(models.Accelerometer).all()
 
-def get_information_compass(db: Session):
-    return db.query(models.Compass).all()
+def get_information_magnetometer(db: Session):
+    return db.query(models.Magnetometer).all()
 
 def get_information_gps(db: Session):
     return db.query(models.GPS).all()

@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from database import crud, models, schemas
 from database.database import SessionLocal, engine
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
+
 
 import sqlite3
 
@@ -14,6 +16,17 @@ models.Base.metadata.create_all(bind=engine)
 dir = os.path.dirname(__file__)
 #
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 templates = Jinja2Templates(directory="../frontend/templates") # Path to the template folder
 
 def get_db():
@@ -27,7 +40,7 @@ def get_db():
 async def root(request: Request, db: Session = Depends(get_db)):
     records = crud.get_information_accelerometer(db)
     if records:
-        times = [records.time for records in records]
+        times = [str(records.time) for records in records]
         x_values = [records.x for records in records]
         y_values = [records.y for records in records]
         z_values = [records.z for records in records]
@@ -40,28 +53,29 @@ async def root(request: Request, db: Session = Depends(get_db)):
 
 
 @app.post("/add_accelerometer")
-async def create_accelerometer(accelerometer: schemas.Accelerometer, db: Session = Depends(get_db)):
+async def add_accelerometer(accelerometer: schemas.Accelerometer, db: Session = Depends(get_db)):
+    
     print(accelerometer)
     crud.add_information_accelerometer(db, accelerometer)
     return "Hola"
 
-@app.post("/add_compass")
-async def create_compass(compass: schemas.Compass, db: Session = Depends(get_db)):
-    crud.add_information_compass(db, compass)
+@app.post("/add_magnetometer")
+async def add_magnetometer(magnetometer: schemas.Magnetometer, db: Session = Depends(get_db)):
+    crud.add_information_magnetometer(db, magnetometer)
     return "Hola"
 
 @app.post("/add_gps")
-async def create_gps(gps: schemas.GPS, db: Session = Depends(get_db)):
+async def add_gps(gps: schemas.GPS, db: Session = Depends(get_db)):
     crud.add_information_gps(db, gps)
     return "Hola"
 
 @app.post("/add_gyroscope")
-async def create_gyroscope(gyroscope: schemas.Gyroscope, db: Session = Depends(get_db)):
+async def add_gyroscope(gyroscope: schemas.Gyroscope, db: Session = Depends(get_db)):
     crud.add_information_gyroscope(db, gyroscope)
     return "Hola"
 
 @app.post("/add_pedometer")
-async def create_pedometer(pedometer: schemas.Pedometer, db: Session = Depends(get_db)):
+async def add_pedometer(pedometer: schemas.Pedometer, db: Session = Depends(get_db)):
     crud.add_information_pedometer(db, pedometer)
     return "Hola"
 
@@ -69,9 +83,9 @@ async def create_pedometer(pedometer: schemas.Pedometer, db: Session = Depends(g
 async def get_accelerometer(request: Request, db: Session = Depends(get_db)):
     return crud.get_information_accelerometer(db)
 
-@app.get("/compass")
-async def get_compass(request: Request, db: Session = Depends(get_db)):
-    return crud.get_information_compass(db)
+@app.get("/magnetometer")
+async def get_magnetometer(request: Request, db: Session = Depends(get_db)):
+    return crud.get_information_magnetometer(db)
 
 @app.get("/gps")
 async def get_gps(request: Request, db: Session = Depends(get_db)):
