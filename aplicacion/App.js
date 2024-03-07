@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer, Gyroscope } from 'expo-sensors';
-import axios from 'axios';
+import { ControllerFetch } from "./ControllerFetch";
+
 
 import * as Location from 'expo-location';
 
 import { Magnetometer } from 'expo-sensors';
 
 export default function App() {
+  const ctrllFetch = new ControllerFetch();
 
   const [dataAccelero, setAccelerometer] = useState({
     x: 0,
@@ -45,7 +47,12 @@ export default function App() {
     setSubscription(
       Accelerometer.addListener(acceleroData => {
         setAccelerometer(acceleroData);
-        sendDataAccelero(dataAccelero);
+
+        ctrllFetch.sendDataAccelero(acceleroData)
+          .then(data => {
+            console.log(data)
+          })
+
       }),
       Gyroscope.addListener(gyroscopeData => {
         setGyroscope(gyroscopeData);
@@ -53,7 +60,6 @@ export default function App() {
       }),
       Magnetometer.addListener(result => {
         setMagneto(result);
-        // sendDataMagneto(dataMagneto);
       })
     );
   };
@@ -94,8 +100,7 @@ export default function App() {
 
 */
   //================== To Server ==================
-  const url = 'https://2d12-150-214-100-80.ngrok-free.app';
-
+  const url = 'https://80b9-90-94-129-209.ngrok-free.app';
 
   // // ------ Accelerometer ------
   // const optionsAccelero = {
@@ -135,62 +140,12 @@ export default function App() {
     })
       .then(response => {
         if (!response.ok) {
-          throw new Error('Error al enviar los datos del Acelerometro al servidor');
+          throw new Error('Error al enviar los datos al servidor');
         }
         return response.json();
       })
       .then(dataAccelero => {
         console.log('Datos enviados correctamente:', dataAccelero);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  };
-
-
-  const sendDataGyro = async (dataGyro) => {
-    console.log('Datos enviados:', dataGyro);
-    fetch(url + '/add_gyroscope', {
-      method: 'POST',
-      body: JSON.stringify(dataGyro),
-      headers: {
-        'Content-type': 'application/json',
-        'accept': 'application/json'
-      }
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error al enviar los datos del Giroscopio al servidor');
-        }
-        return response.json();
-      })
-      .then(dataAccelero => {
-        console.log('Datos enviados correctamente:', dataGyro);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  };
-
-
-  const sendDataMagneto = async (dataMagneto) => {
-    console.log('Datos enviados:', dataMagneto);
-    fetch(url + '/add_magnetometer', {
-      method: 'POST',
-      body: JSON.stringify(dataMagneto),
-      headers: {
-        'Content-type': 'application/json',
-        'accept': 'application/json'
-      }
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error al enviar los datos del Giroscopio al servidor');
-        }
-        return response.json();
-      })
-      .then(dataAccelero => {
-        console.log('Datos enviados correctamente:', dataMagneto);
       })
       .catch(error => {
         console.error('Error:', error);
@@ -247,30 +202,8 @@ export default function App() {
   //   });
   // };
 
-/*
-  const sendDataMagneto = async (dataMagneto) => {
-    fetch(url + '/add_magnetometer', optionsMagneto)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error al enviar los datos al servidor');
-        }
-        return response.json();
-    })
-    .then(dataMagneto => {
-        console.log('Datos enviados correctamente:', dataMagneto);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-  };
-  */
 
-  //=================================================
 
-  /*
-    <Text style={styles.text}>GPS</Text>
-    <Text style={styles.paragraph}>{textGPS}</Text>
-  */
 
   return (
     <View style={styles.container}>
@@ -284,11 +217,12 @@ export default function App() {
       <Text style={styles.text}>x: {dataGyro.x}</Text>
       <Text style={styles.text}>y: {dataGyro.y}</Text>
       <Text style={styles.text}>z: {dataGyro.z}</Text>
+      <Text style={styles.text}> </Text>
 
       <Text style={styles.text}>Magnetometer:</Text>
       <Text style={styles.text}>x: {dataMagneto.x}</Text>
       <Text style={styles.text}>y: {dataMagneto.y}</Text>
-      <Text style={styles.text}>z: {dataMagneto.z}</Text>       
+      <Text style={styles.text}>z: {dataMagneto.z}</Text>
 
       <Text style={styles.text}>GPS</Text>
       <Text style={styles.paragraph}>{textGPS}</Text>
