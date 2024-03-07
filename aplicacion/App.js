@@ -61,7 +61,7 @@ export default function App() {
   };
 
   //--------------------- GPS ---------------------
-
+/*
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -88,7 +88,7 @@ export default function App() {
   } else if (location) {
     textGPS = JSON.stringify(location);
   }
-
+*/
  //================== To Server ==================
   const url = 'http://localhost:8000';
 
@@ -166,7 +166,14 @@ export default function App() {
         console.error('Error:', error);
     });
   };
-  
+
+  //=================================================
+
+  /*
+    <Text style={styles.text}>GPS</Text>
+    <Text style={styles.paragraph}>{textGPS}</Text>
+  */
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Accelerometer: (in gs where 1g = 9.81 m/s^2)</Text>
@@ -184,10 +191,7 @@ export default function App() {
       <Text style={styles.text}>Magnetometer:</Text>
       <Text style={styles.text}>x: {dataMagneto.x}</Text>
       <Text style={styles.text}>y: {dataMagneto.y}</Text>
-      <Text style={styles.text}>z: {dataMagneto.z}</Text>
-
-      <Text style={styles.text}>GPS</Text>
-      <Text style={styles.paragraph}>{textGPS}</Text> 
+      <Text style={styles.text}>z: {dataMagneto.z}</Text>       
       
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={subscription ? _unsubscribe : _subscribe} style={styles.button}>
