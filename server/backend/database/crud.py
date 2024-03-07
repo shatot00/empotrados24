@@ -10,21 +10,21 @@ def add_information_accelerometer(db: Session, accelerometer: schemas.Accelerome
     return db_accelerometer
 
 def add_information_magnetometer(db: Session, magnetometer: schemas.Magnetometer):
-    db_magnetometer = models.Magnetometer(time=magnetometer.time, x=magnetometer.x, y=magnetometer.y, z=magnetometer.z)
+    db_magnetometer = models.Magnetometer(time=datetime.now(), x=magnetometer.x, y=magnetometer.y, z=magnetometer.z)
     db.add(db_magnetometer)
     db.commit()
     db.refresh(db_magnetometer)
     return db_magnetometer
 
 def add_information_gps(db: Session, gps: schemas.GPS):
-    db_gps = models.GPS(time=gps.time, latitude=gps.latitude, longitude=gps.longitude)
+    db_gps = models.GPS(time=datetime.now(), latitude=gps.latitude, longitude=gps.longitude)
     db.add(db_gps)
     db.commit()
     db.refresh(db_gps)
     return db_gps
 
 def add_information_gyroscope(db: Session, gyroscope: schemas.Gyroscope):
-    db_gyroscope = models.Gyroscope(time=gyroscope.time, x=gyroscope.x, y=gyroscope.y, z=gyroscope.z)
+    db_gyroscope = models.Gyroscope(time=datetime.now(), x=gyroscope.x, y=gyroscope.y, z=gyroscope.z)
     db.add(db_gyroscope)
     db.commit()
     db.refresh(db_gyroscope)

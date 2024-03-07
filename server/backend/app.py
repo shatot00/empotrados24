@@ -60,8 +60,9 @@ async def add_accelerometer(accelerometer: schemas.Accelerometer, db: Session = 
 
 @app.post("/add_magnetometer")
 async def add_magnetometer(magnetometer: schemas.Magnetometer, db: Session = Depends(get_db)):
+    print(magnetometer)
     crud.add_information_magnetometer(db, magnetometer)
-    return "Hola"
+    return "added magnetometer"
 
 @app.post("/add_gps")
 async def add_gps(gps: schemas.GPS, db: Session = Depends(get_db)):

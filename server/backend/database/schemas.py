@@ -28,7 +28,7 @@ class Magnetometer(BaseModel):
         direction (str): The direction indicated by the compass.
     """
 
-    time: int
+    #time: int
     x: float
     y: float
     z: float
@@ -46,7 +46,7 @@ class GPS(BaseModel):
         longitude (str): The longitude coordinate.
     """
 
-    time: int
+    #time: int
     latitude: float
     longitude: float
 
@@ -64,7 +64,7 @@ class Gyroscope(BaseModel):
         z (str): The z-axis value of the gyroscope reading.
     """
 
-    time: int
+    #time: int
     x: float
     y: float
     z: float
