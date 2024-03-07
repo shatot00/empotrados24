@@ -49,7 +49,7 @@ export default function App() {
       }),
       Gyroscope.addListener(gyroscopeData => {
         setGyroscope(gyroscopeData);
-        sendDataGyro(dataGyro);
+        //sendDataGyro(dataGyro);
       }),
       Magnetometer.addListener(result => {
         setMagneto(result);
@@ -94,7 +94,7 @@ export default function App() {
 
 */
   //================== To Server ==================
-  const url = 'https://80b9-90-94-129-209.ngrok-free.app';
+  const url = 'https://2d12-150-214-100-80.ngrok-free.app';
 
 
   // // ------ Accelerometer ------
