@@ -56,6 +56,7 @@ export default function App() {
       }),
       Gyroscope.addListener(gyroscopeData => {
         setGyroscope(gyroscopeData);
+        //sendDataGyro(dataGyro);
       }),
       Magnetometer.addListener(result => {
         setMagneto(result);
@@ -69,7 +70,7 @@ export default function App() {
   };
 
   //--------------------- GPS ---------------------
-
+/*
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
@@ -97,7 +98,111 @@ export default function App() {
     textGPS = JSON.stringify(location);
   }
 
+*/
   //================== To Server ==================
+  const url = 'https://80b9-90-94-129-209.ngrok-free.app';
+
+  // // ------ Accelerometer ------
+  // const optionsAccelero = {
+  //   method: 'POST',
+  //   headers: {
+  //       'Content-Type': 'application/json',
+  //   },
+  //   body: dataAccelero,
+  // };
+
+  //   crearExamen(examen, idSubject) {
+
+  //     return fetch(this.srvUrl + "/subjects/" + idSubject + "/examst", {
+  //         method: 'POST',
+  //         body: JSON.stringify(examen),
+  //         headers: {
+  //             'Content-type': 'application/json',
+  //             'accept': 'application/json'
+  //         }
+  //     })
+  //         .then(response => this.comprobarRespuesta(response))
+  //         .then(response => this.devolverRespuesta(response));
+
+
+
+  // }
+
+  const sendDataAccelero = async (dataAccelero) => {
+    console.log('Datos enviados:', dataAccelero);
+    fetch(url + '/add_accelerometer', {
+      method: 'POST',
+      body: JSON.stringify(dataAccelero),
+      headers: {
+        'Content-type': 'application/json',
+        'accept': 'application/json'
+      }
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al enviar los datos al servidor');
+        }
+        return response.json();
+      })
+      .then(dataAccelero => {
+        console.log('Datos enviados correctamente:', dataAccelero);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
+  // ------ Gyroscope ------
+  // const optionsGyro = {
+  //   method: 'POST',
+  //   headers: {
+  //       'Content-Type': 'application/json',
+  //   },
+  //   body: dataGyro,
+  // };
+
+  // const sendDataGyro = async (dataGyro) => {
+  //   fetch(url + '/add_gyroscope', optionsGyro)
+  //   .then(response => {
+  //       if (!response.ok) {
+  //           throw new Error('Error al enviar los datos al servidor');
+  //       }
+  //       return response.json();
+  //   })
+  //   .then(dataGyro => {
+  //       console.log('Datos enviados correctamente:', dataGyro);
+  //   })
+  //   .catch(error => {
+  //       console.error('Error:', error);
+  //   });
+  // };
+
+  // // ------ setMagneto ------
+  // const optionsMagneto = {
+  //   method: 'POST',
+  //   headers: {
+  //       'Content-Type': 'application/json',
+  //   },
+  //   body: dataMagneto,
+  // };
+
+  // const sendDataMagneto = async (dataMagneto) => {
+  //   fetch(url + '/add_magnetometer', optionsMagneto)
+  //   .then(response => {
+  //       if (!response.ok) {
+  //           throw new Error('Error al enviar los datos al servidor');
+  //       }
+  //       return response.json();
+  //   })
+  //   .then(dataMagneto => {
+  //       console.log('Datos enviados correctamente:', dataMagneto);
+  //   })
+  //   .catch(error => {
+  //       console.error('Error:', error);
+  //   });
+  // };
+
+
 
 
   return (
@@ -118,7 +223,6 @@ export default function App() {
       <Text style={styles.text}>x: {dataMagneto.x}</Text>
       <Text style={styles.text}>y: {dataMagneto.y}</Text>
       <Text style={styles.text}>z: {dataMagneto.z}</Text>
-      <Text style={styles.text}> </Text>
 
       <Text style={styles.text}>GPS</Text>
       <Text style={styles.paragraph}>{textGPS}</Text>
