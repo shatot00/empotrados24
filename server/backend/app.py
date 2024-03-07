@@ -51,7 +51,6 @@ async def root(request: Request, db: Session = Depends(get_db)):
 
     return {"message": "Welcome :)"}
 
-
 @app.post("/add_accelerometer")
 async def add_accelerometer(accelerometer: schemas.Accelerometer, db: Session = Depends(get_db)):
     
