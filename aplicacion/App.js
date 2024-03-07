@@ -3,7 +3,6 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer, Gyroscope } from 'expo-sensors';
 import { ControllerFetch } from "./ControllerFetch";
 
-
 import * as Location from 'expo-location';
 
 import { Magnetometer } from 'expo-sensors';
