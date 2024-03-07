@@ -42,15 +42,18 @@ export default function App() {
     setSubscription(
       Accelerometer.addListener(acceleroData =>{
         setAccelerometer(acceleroData);
-        sendDataAccelero(dataAccelero);
+        //sendDataAccelero(acceleroData);
+        sendData(dataAccelero, "/add_accelerometer");
       }), 
       Gyroscope.addListener(gyroscopeData =>{
         setGyroscope(gyroscopeData);
-        sendDataGyro(dataGyro);
+        //sendDataGyro(gyroscopeData);
+        sendData(dataGyro, "/add_gyroscope");
       }),
       Magnetometer.addListener(result => {
         setMagneto(result);
-        sendDataMagneto(dataMagneto);
+        //sendDataMagneto(result);
+        sendData(dataMagneto, "/add_magnetometer");
       })
     );
   };
@@ -167,6 +170,26 @@ export default function App() {
     });
   };
   
+  //------------ Metodo para enviar de prueba ------------
+  const sendData = async (data, method) => {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url + method, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          var json = JSON.parse(xhr.responseText);
+          console.log(json.x + ", " + json.y + ", "+ json.z);
+      }
+    };
+    //console.log(xhr.readyState + " " + xhr.status );
+    xhr.send(data);
+  } 
+
+  /*
+   <Text style={styles.text}>GPS</Text>
+      <Text style={styles.paragraph}>{textGPS}</Text> 
+   */
+  
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Accelerometer: (in gs where 1g = 9.81 m/s^2)</Text>
@@ -186,8 +209,6 @@ export default function App() {
       <Text style={styles.text}>y: {dataMagneto.y}</Text>
       <Text style={styles.text}>z: {dataMagneto.z}</Text>
 
-      <Text style={styles.text}>GPS</Text>
-      <Text style={styles.paragraph}>{textGPS}</Text> 
       
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={subscription ? _unsubscribe : _subscribe} style={styles.button}>
