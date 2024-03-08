@@ -2,24 +2,41 @@
 <html>
 
 <head>
-    <title>Generador de Gráficas</title>
+    <title>Magnetometer data</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         body {
-            background-color: #f0f0f0;
-        }
+         background-color: #f4e9cd;
+         font-family:Georgia, Times, 'Times New Roman', serif, sans-serif;
+ }
 
-        button,
-        a {
-            font-size: 16px;
-            margin-right: 10px;
-        }
+ h1 {
+     text-align: center;
+     color: #333;
+ }
 
-        #graph {
-            width: 100%;
-            height: 500px;
-        }
-    </style>
+ #graph {
+     width: 100%;
+     height: 500px;
+     margin: 0 auto;
+ }
+
+ button.bottom-right {
+     position: absolute;
+     bottom: 10px;
+     right: 10px;
+     background-color: #468189;
+     color: #fff;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 5px;
+ }
+
+ button.bottom-right:hover {
+     background-color: #555;
+ }
+</style>
 </head>
 
 <body>
@@ -71,7 +88,7 @@
 
     
         var layout = {
-            title: 'Datos del magnetometer',
+           
             xaxis: {
                 title: 'Tiempo'
             },
