@@ -30,12 +30,13 @@ def add_information_gyroscope(db: Session, gyroscope: schemas.Gyroscope):
     db.refresh(db_gyroscope)
     return db_gyroscope
 
-def add_information_pedometer(db: Session, pedometer: schemas.Pedometer):
-    db_pedometer = models.Pedometer(time=datetime.now(), steps=pedometer.steps)
-    db.add(db_pedometer)
+def add_information_lightSensor(db: Session, lightSensor: schemas.LightSensor):
+    db_lightSensor = models.LightSensor(time=datetime.now(), illuminance=lightSensor.illuminance)
+    db.add(db_lightSensor)
     db.commit()
-    db.refresh(db_pedometer)
-    return db_pedometer
+    db.refresh(db_lightSensor)
+    return db_lightSensor
+
 
 def get_information_accelerometer(db: Session):
     return db.query(models.Accelerometer).all()
@@ -49,5 +50,5 @@ def get_information_gps(db: Session):
 def get_information_gyroscope(db: Session):
     return db.query(models.Gyroscope).all()
 
-def get_information_pedometer(db: Session):
-    return db.query(models.Pedometer).all()
+def get_information_lightSensor(db: Session):
+    return db.query(models.LightSensor).all()
