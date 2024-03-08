@@ -1,6 +1,6 @@
 export class ControllerFetch {
     constructor() {
-        this.url = 'https://4426-2a02-9130-88b0-d8c8-f592-f5d7-d8c5-906b.ngrok-free.app';
+        this.url = 'https://b2c6-150-214-100-106.ngrok-free.app';
     }
 
     sendData = async (data, operation) => {
