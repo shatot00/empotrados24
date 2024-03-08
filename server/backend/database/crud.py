@@ -31,7 +31,7 @@ def add_information_gyroscope(db: Session, gyroscope: schemas.Gyroscope):
     return db_gyroscope
 
 def add_information_pedometer(db: Session, pedometer: schemas.Pedometer):
-    db_pedometer = models.Pedometer(time=pedometer.time, steps=pedometer.steps)
+    db_pedometer = models.Pedometer(time=datetime.now(), steps=pedometer.steps)
     db.add(db_pedometer)
     db.commit()
     db.refresh(db_pedometer)
@@ -51,24 +51,3 @@ def get_information_gyroscope(db: Session):
 
 def get_information_pedometer(db: Session):
     return db.query(models.Pedometer).all()
-
-
-
-# def get_user(db: Session, user_id: int):
-#     return db.query(models.User).filter(models.User.id == user_id).first()
-
-# def get_user_by_email(db: Session, email: str):
-#     return db.query(models.User).filter(models.User.email == email).first()
-
-# def get_users(db: Session, skip: int = 0, limit: int = 100):
-#     return db.query(models.User).offset(skip).limit(limit).all()
-
-# def get_items(db: Session, skip: int = 0, limit: int = 100):
-#     return db.query(models.Item).offset(skip).limit(limit).all()
-
-# def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
-#     db_item = models.Item(**item.dict(), owner_id=user_id)
-#     db.add(db_item)
-#     db.commit()
-#     db.refresh(db_item)
-#     return db_item

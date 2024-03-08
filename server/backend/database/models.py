@@ -4,15 +4,16 @@ from .database import Base
 
 class Accelerometer(Base):
     """
-    Represents an accelerometer sensor.
+    Represents an accelerometer reading.
 
     Attributes:
-        id (int): The unique identifier for the accelerometer.
-        time (str): The timestamp of the accelerometer reading.
+        id (int): The unique identifier for the accelerometer reading.
+        time (datetime): The timestamp of the accelerometer reading.
         x (float): The x-axis value of the accelerometer reading.
         y (float): The y-axis value of the accelerometer reading.
         z (float): The z-axis value of the accelerometer reading.
     """
+
     __tablename__ = "accelerometer"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
@@ -23,12 +24,14 @@ class Accelerometer(Base):
 
 class Magnetometer(Base):
     """
-    Represents a compass sensor.
+    Represents a magnetometer reading.
 
     Attributes:
-        id (int): The unique identifier of the compass sensor.
-        time (str): The timestamp of the sensor reading.
-        direction (float): The direction in degrees (0-360).
+        id (int): The unique identifier of the magnetometer reading.
+        time (datetime): The timestamp of the reading.
+        x (float): The x-axis value of the magnetic field.
+        y (float): The y-axis value of the magnetic field.
+        z (float): The z-axis value of the magnetic field.
     """
     __tablename__ = "magnetometer"
 
@@ -40,14 +43,15 @@ class Magnetometer(Base):
 
 class GPS(Base):
     """
-    Represents a GPS sensor.
+    Represents a GPS location.
 
     Attributes:
-        id (int): The unique identifier of the sensor.
-        time (str): The timestamp of the GPS reading.
-        latitude (float): The latitude coordinate.
-        longitude (float): The longitude coordinate.
+        id (int): The unique identifier of the GPS location.
+        time (datetime): The timestamp of the GPS location.
+        latitude (float): The latitude coordinate of the GPS location.
+        longitude (float): The longitude coordinate of the GPS location.
     """
+
     __tablename__ = "gps"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
@@ -57,15 +61,16 @@ class GPS(Base):
 
 class Gyroscope(Base):
     """
-    Represents a gyroscope sensor.
+    Represents a gyroscope measurement.
 
     Attributes:
-        id (int): The unique identifier for the gyroscope.
-        time (str): The timestamp of the gyroscope reading.
-        x (float): The x-axis value of the gyroscope reading.
-        y (float): The y-axis value of the gyroscope reading.
-        z (float): The z-axis value of the gyroscope reading.
+        id (int): The unique identifier for the gyroscope measurement.
+        time (datetime): The timestamp of the measurement.
+        x (float): The x-axis value of the gyroscope measurement.
+        y (float): The y-axis value of the gyroscope measurement.
+        z (float): The z-axis value of the gyroscope measurement.
     """
+
     __tablename__ = "gyroscope"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
@@ -76,13 +81,14 @@ class Gyroscope(Base):
     
 class Pedometer(Base):
     """
-    Represents a pedometer sensor.
+    Represents a pedometer entry.
 
     Attributes:
-        id (int): The unique identifier for the pedometer.
-        time (str): The timestamp of the pedometer reading.
+        id (int): The unique identifier for the pedometer entry.
+        time (datetime): The timestamp of the pedometer entry.
         steps (int): The number of steps recorded by the pedometer.
     """
+
     __tablename__ = "pedometer"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
