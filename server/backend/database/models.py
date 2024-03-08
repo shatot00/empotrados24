@@ -78,22 +78,7 @@ class Gyroscope(Base):
     x = Column(Float, primary_key=False, nullable=False, index=False)
     y = Column(Float, primary_key=False, nullable=False, index=False)
     z = Column(Float, primary_key=False, nullable=False, index=False)
-    
-class Pedometer(Base):
-    """
-    Represents a pedometer entry.
 
-    Attributes:
-        id (int): The unique identifier for the pedometer entry.
-        time (datetime): The timestamp of the pedometer entry.
-        steps (int): The number of steps recorded by the pedometer.
-    """
-
-    __tablename__ = "pedometer"
-
-    id = Column(Integer, primary_key=True, index=True, nullable=False)
-    time = Column(DateTime, primary_key=False, nullable=False, index=False)
-    steps = Column(Integer, primary_key=False, nullable=False, index=False)
 
 class LightSensor(Base):
 

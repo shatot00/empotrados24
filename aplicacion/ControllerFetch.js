@@ -15,7 +15,7 @@ export class ControllerFetch {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error al enviar los datos al servidor  '+ data.x+" "+ data.y +" "+data.z+"  "+operation);
+                    throw new Error('Error al enviar los datos al servidor '+operation);
                 }
                 return response.json();
             })

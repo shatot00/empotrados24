@@ -70,7 +70,6 @@ export default function App() {
       
       LightSensor.addListener(illuminanceData =>{
         setIlluminance(illuminanceData);
-        console.log(illuminanceData);
         ctrllFetch.sendData(illuminanceData, "/add_lightSensor") 
       })
     );
@@ -134,9 +133,8 @@ export default function App() {
       <Text style={styles.text}>y: {dataMagneto.y}</Text>
       <Text style={styles.text}>z: {dataMagneto.z}</Text> 
 
-      <Text>
-        Illuminance: {illuminance.illuminance}
-      </Text>
+      <Text style={styles.text}>LightSensor:</Text>
+      <Text> Illuminance: {illuminance.illuminance} </Text>
 
       <Text style={styles.text}>GPS</Text>
       <Text style={styles.paragraph}>{textGPS}</Text>     

@@ -51,20 +51,11 @@ class Gyroscope(BaseModel):
         from_attributes = True
 
 
-class Pedometer(BaseModel):
-    """
-    Represents a pedometer object.
-    """
-
-    steps: int
-
-    class ConfigDict:
-        from_attributes = True
-
 
 class LightSensor(BaseModel):
     
-    illuminance = int
+    illuminance: int
 
     class ConfigDict:
         from_attributes = True
+

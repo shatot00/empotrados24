@@ -76,11 +76,6 @@ async def add_gyroscope(gyroscope: schemas.Gyroscope, db: Session = Depends(get_
     return "added gyroscope"
 
 
-@app.post("/add_pedometer")
-async def add_pedometer(pedometer: schemas.Pedometer, db: Session = Depends(get_db)):
-    crud.add_information_pedometer(db, pedometer)
-    return "added pedometer"
-
 @app.post("/add_lightSensor")
 async def add_lightSensor(lightSensor: schemas.LightSensor, db: Session = Depends(get_db)):
     crud.add_information_lightSensor(db, lightSensor)
@@ -132,6 +127,6 @@ async def get_gyroscope(request: Request, db: Session = Depends(get_db)):
         return templates.TemplateResponse("gyroscope.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
 
-@app.get("/pedometer")
-async def get_pedometer(db: Session = Depends(get_db)):
-    return crud.get_information_pedometer(db)
+@app.get("/lightSensor")
+async def get_lightSensor(db: Session = Depends(get_db)):
+    return crud.get_information_lightSensor(db)
