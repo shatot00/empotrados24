@@ -1,13 +1,13 @@
 export class ControllerFetch {
     constructor() {
-        this.url = 'http://d8d8-150-214-100-106.ngrok-free.app';
+        this.url = 'https://b2c6-150-214-100-106.ngrok-free.app';
     }
 
-    sendDataAccelero = async (dataAccelero) => {
-        console.log('Datos enviados:', dataAccelero);
-        fetch(url + '/add_accelerometer', {
+    sendData = async (data, operation) => {
+        //console.log('Datos enviados:', data);
+        fetch(this.url + operation, {
             method: 'POST',
-            body: JSON.stringify(dataAccelero),
+            body: JSON.stringify(data),
             headers: {
                 'Content-type': 'application/json',
                 'accept': 'application/json'
@@ -15,12 +15,12 @@ export class ControllerFetch {
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Error al enviar los datos al servidor');
+                    throw new Error('Error al enviar los datos al servidor '+operation);
                 }
                 return response.json();
             })
-            .then(dataAccelero => {
-                console.log('Datos enviados correctamente:', dataAccelero);
+            .then(data => {
+                console.log('Datos enviados correctamente: '+ operation);
             })
             .catch(error => {
                 console.error('Error:', error);

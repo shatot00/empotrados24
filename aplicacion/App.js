@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Accelerometer, Gyroscope } from 'expo-sensors';
+import { Accelerometer, Gyroscope, LightSensor } from 'expo-sensors';
 import { ControllerFetch } from "./ControllerFetch";
 
 import * as Location from 'expo-location';
 
+
 import { Magnetometer } from 'expo-sensors';
+
 
 export default function App() {
   const ctrllFetch = new ControllerFetch();
@@ -28,37 +30,47 @@ export default function App() {
     z: 0,
   });
 
-  const [subscription, setSubscription] = useState(null);
+  const [ illuminance, setIlluminance] = useState({ 
+    illuminance: 0
+   });
+
+  const [subscription, setSubscription] = useState(null);  
 
   const _slow = () => {
-    Accelerometer.setUpdateInterval(15000);
-    Gyroscope.setUpdateInterval(15000);
-    Magnetometer.setUpdateInterval(15000);
+    Accelerometer.setUpdateInterval(30000);
+    Gyroscope.setUpdateInterval(30000);
+    Magnetometer.setUpdateInterval(30000);
+    LightSensor.setUpdateInterval(30000);
   }
 
   const _fast = () => {
-    Accelerometer.setUpdateInterval(5000);
-    Gyroscope.setUpdateInterval(5000);
-    Magnetometer.setUpdateInterval(5000);
+    Accelerometer.setUpdateInterval(15000);
+    Gyroscope.setUpdateInterval(15000);
+    Magnetometer.setUpdateInterval(15000);
+    LightSensor.setUpdateInterval(15000);
   }
+  _fast();
 
   const _subscribe = () => {
     setSubscription(
       Accelerometer.addListener(acceleroData => {
         setAccelerometer(acceleroData);
-
-        ctrllFetch.sendDataAccelero(acceleroData)
-          .then(data => {
-            console.log(data)
-          })
-
+        ctrllFetch.sendData(acceleroData, "/add_accelerometer")
       }),
+
       Gyroscope.addListener(gyroscopeData => {
         setGyroscope(gyroscopeData);
-        //sendDataGyro(dataGyro);
+        ctrllFetch.sendData(gyroscopeData, "/add_gyroscope")
       }),
-      Magnetometer.addListener(result => {
-        setMagneto(result);
+
+      Magnetometer.addListener(magnetoData => {
+        setMagneto(magnetoData);
+        ctrllFetch.sendData(magnetoData, "/add_magnetometer")          
+      }),
+      
+      LightSensor.addListener(illuminanceData =>{
+        setIlluminance(illuminanceData);
+        ctrllFetch.sendData(illuminanceData, "/add_lightSensor") 
       })
     );
   };
@@ -69,14 +81,11 @@ export default function App() {
   };
 
   //--------------------- GPS ---------------------
-/*
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
-    _subscribe();
-    (async () => {
-
+    (async () => {      
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -85,8 +94,13 @@ export default function App() {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+      //console.log(location);
+      json_location = {
+        "latitude": location.coords.latitude, 
+        "longitude": location.coords.longitude
+      };
+      ctrllFetch.sendData(json_location, "/add_gps")
     })();
-    return () => _unsubscribe();
   }, []);
 
   let textGPS = 'Waiting..';
@@ -97,111 +111,7 @@ export default function App() {
     textGPS = JSON.stringify(location);
   }
 
-*/
-  //================== To Server ==================
-  const url = 'https://80b9-90-94-129-209.ngrok-free.app';
-
-  // // ------ Accelerometer ------
-  // const optionsAccelero = {
-  //   method: 'POST',
-  //   headers: {
-  //       'Content-Type': 'application/json',
-  //   },
-  //   body: dataAccelero,
-  // };
-
-  //   crearExamen(examen, idSubject) {
-
-  //     return fetch(this.srvUrl + "/subjects/" + idSubject + "/examst", {
-  //         method: 'POST',
-  //         body: JSON.stringify(examen),
-  //         headers: {
-  //             'Content-type': 'application/json',
-  //             'accept': 'application/json'
-  //         }
-  //     })
-  //         .then(response => this.comprobarRespuesta(response))
-  //         .then(response => this.devolverRespuesta(response));
-
-
-
-  // }
-
-  const sendDataAccelero = async (dataAccelero) => {
-    console.log('Datos enviados:', dataAccelero);
-    fetch(url + '/add_accelerometer', {
-      method: 'POST',
-      body: JSON.stringify(dataAccelero),
-      headers: {
-        'Content-type': 'application/json',
-        'accept': 'application/json'
-      }
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error al enviar los datos al servidor');
-        }
-        return response.json();
-      })
-      .then(dataAccelero => {
-        console.log('Datos enviados correctamente:', dataAccelero);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  };
-
-  // ------ Gyroscope ------
-  // const optionsGyro = {
-  //   method: 'POST',
-  //   headers: {
-  //       'Content-Type': 'application/json',
-  //   },
-  //   body: dataGyro,
-  // };
-
-  // const sendDataGyro = async (dataGyro) => {
-  //   fetch(url + '/add_gyroscope', optionsGyro)
-  //   .then(response => {
-  //       if (!response.ok) {
-  //           throw new Error('Error al enviar los datos al servidor');
-  //       }
-  //       return response.json();
-  //   })
-  //   .then(dataGyro => {
-  //       console.log('Datos enviados correctamente:', dataGyro);
-  //   })
-  //   .catch(error => {
-  //       console.error('Error:', error);
-  //   });
-  // };
-
-  // // ------ setMagneto ------
-  // const optionsMagneto = {
-  //   method: 'POST',
-  //   headers: {
-  //       'Content-Type': 'application/json',
-  //   },
-  //   body: dataMagneto,
-  // };
-
-  // const sendDataMagneto = async (dataMagneto) => {
-  //   fetch(url + '/add_magnetometer', optionsMagneto)
-  //   .then(response => {
-  //       if (!response.ok) {
-  //           throw new Error('Error al enviar los datos al servidor');
-  //       }
-  //       return response.json();
-  //   })
-  //   .then(dataMagneto => {
-  //       console.log('Datos enviados correctamente:', dataMagneto);
-  //   })
-  //   .catch(error => {
-  //       console.error('Error:', error);
-  //   });
-  // };
-
-
+  //--------------------- LightSensor ---------------------
 
 
   return (
@@ -221,10 +131,13 @@ export default function App() {
       <Text style={styles.text}>Magnetometer:</Text>
       <Text style={styles.text}>x: {dataMagneto.x}</Text>
       <Text style={styles.text}>y: {dataMagneto.y}</Text>
-      <Text style={styles.text}>z: {dataMagneto.z}</Text>
+      <Text style={styles.text}>z: {dataMagneto.z}</Text> 
+
+      <Text style={styles.text}>LightSensor:</Text>
+      <Text> Illuminance: {illuminance.illuminance} </Text>
 
       <Text style={styles.text}>GPS</Text>
-      <Text style={styles.paragraph}>{textGPS}</Text>
+      <Text style={styles.paragraph}>{textGPS}</Text>     
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={subscription ? _unsubscribe : _subscribe} style={styles.button}>
