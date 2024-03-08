@@ -37,6 +37,14 @@ def add_information_pedometer(db: Session, pedometer: schemas.Pedometer):
     db.refresh(db_pedometer)
     return db_pedometer
 
+def add_information_lightSensor(db: Session, lightSensor: schemas.LightSensor):
+    db_lightSensor = models.Pedometer(time=datetime.now(), steps=lightSensor.illuminance)
+    db.add(db_lightSensor)
+    db.commit()
+    db.refresh(db_lightSensor)
+    return db_lightSensor
+
+
 def get_information_accelerometer(db: Session):
     return db.query(models.Accelerometer).all()
 

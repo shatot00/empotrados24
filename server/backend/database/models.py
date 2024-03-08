@@ -94,3 +94,11 @@ class Pedometer(Base):
     id = Column(Integer, primary_key=True, index=True, nullable=False)
     time = Column(DateTime, primary_key=False, nullable=False, index=False)
     steps = Column(Integer, primary_key=False, nullable=False, index=False)
+
+class LightSensor(Base):
+
+    __tablename__ = "lightSensor"
+
+    id = Column(Integer, primary_key=True, index=True, nullable=False)
+    time = Column(DateTime, primary_key=False, nullable=False, index=False)
+    illuminance = Column(Integer, primary_key=False, nullable=False, index=False)

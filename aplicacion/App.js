@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Accelerometer, Gyroscope } from 'expo-sensors';
+import { Accelerometer, Gyroscope, LightSensor } from 'expo-sensors';
 import { ControllerFetch } from "./ControllerFetch";
 
 import * as Location from 'expo-location';
@@ -30,18 +30,24 @@ export default function App() {
     z: 0,
   });
 
-  const [subscription, setSubscription] = useState(null);
+  const [ illuminance, setIlluminance] = useState({ 
+    illuminance: 0
+   });
+
+  const [subscription, setSubscription] = useState(null);  
 
   const _slow = () => {
     Accelerometer.setUpdateInterval(30000);
     Gyroscope.setUpdateInterval(30000);
     Magnetometer.setUpdateInterval(30000);
+    LightSensor.setUpdateInterval(30000);
   }
 
   const _fast = () => {
     Accelerometer.setUpdateInterval(15000);
     Gyroscope.setUpdateInterval(15000);
     Magnetometer.setUpdateInterval(15000);
+    LightSensor.setUpdateInterval(15000);
   }
   _fast();
 
@@ -60,7 +66,13 @@ export default function App() {
       Magnetometer.addListener(magnetoData => {
         setMagneto(magnetoData);
         ctrllFetch.sendData(magnetoData, "/add_magnetometer")          
-      })      
+      }),
+      
+      LightSensor.addListener(illuminanceData =>{
+        setIlluminance(illuminanceData);
+        console.log(illuminanceData);
+        ctrllFetch.sendData(illuminanceData, "/add_lightSensor") 
+      })
     );
   };
 
@@ -99,7 +111,9 @@ export default function App() {
   } else if (location) {
     textGPS = JSON.stringify(location);
   }
-//----------------------------------------------
+
+  //--------------------- LightSensor ---------------------
+
 
   return (
     <View style={styles.container}>
@@ -119,6 +133,10 @@ export default function App() {
       <Text style={styles.text}>x: {dataMagneto.x}</Text>
       <Text style={styles.text}>y: {dataMagneto.y}</Text>
       <Text style={styles.text}>z: {dataMagneto.z}</Text> 
+
+      <Text>
+        Illuminance: {illuminance.illuminance}
+      </Text>
 
       <Text style={styles.text}>GPS</Text>
       <Text style={styles.paragraph}>{textGPS}</Text>     

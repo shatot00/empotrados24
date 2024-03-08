@@ -35,7 +35,7 @@ def get_db():
         yield db
     finally:
         db.close()
-        
+
 
 @app.get("/")
 async def root(request: Request, db: Session = Depends(get_db)):
@@ -74,6 +74,17 @@ async def add_gps(gps: schemas.GPS, db: Session = Depends(get_db)):
 async def add_gyroscope(gyroscope: schemas.Gyroscope, db: Session = Depends(get_db)):
     crud.add_information_gyroscope(db, gyroscope)
     return "added gyroscope"
+
+
+@app.post("/add_pedometer")
+async def add_pedometer(pedometer: schemas.Pedometer, db: Session = Depends(get_db)):
+    crud.add_information_pedometer(db, pedometer)
+    return "added pedometer"
+
+@app.post("/add_lightSensor")
+async def add_lightSensor(lightSensor: schemas.LightSensor, db: Session = Depends(get_db)):
+    crud.add_information_lightSensor(db, lightSensor)
+    return "added lightSensor"
 
 
 @app.get("/accelerometer")
