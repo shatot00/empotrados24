@@ -17,7 +17,7 @@ def add_information_magnetometer(db: Session, magnetometer: schemas.Magnetometer
     return db_magnetometer
 
 def add_information_gps(db: Session, gps: schemas.GPS):
-    db_gps = models.GPS(time=datetime.now(), latitude=gps.latitude, longitude=gps.longitude)
+    db_gps = models.GPS(latitude=gps.latitude, longitude=gps.longitude)
     db.add(db_gps)
     db.commit()
     db.refresh(db_gps)
