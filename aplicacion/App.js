@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accelerometer, Gyroscope } from 'expo-sensors';
+import { ControllerFetch } from "./ControllerFetch";
 
 import * as Location from 'expo-location';
 
 import { Magnetometer } from 'expo-sensors';
 
+
 export default function App() {
-  
-  const [ dataAccelero, setAccelerometer] = useState({
+  const ctrllFetch = new ControllerFetch();
+
+  const [dataAccelero, setAccelerometer] = useState({
     x: 0,
     y: 0,
     z: 0,
   });
 
-  const [ dataGyro, setGyroscope] = useState({
+  const [dataGyro, setGyroscope] = useState({
     x: 0,
     y: 0,
     z: 0,
@@ -28,33 +31,44 @@ export default function App() {
 
   const [subscription, setSubscription] = useState(null);
 
-  const _slow = () => { Accelerometer.setUpdateInterval(1000);
-                        Gyroscope.setUpdateInterval(1000);
-                        Magnetometer.setUpdateInterval(1000);
-                      }
+  const _slow = () => {
+    Accelerometer.setUpdateInterval(40000);
+    Gyroscope.setUpdateInterval(40000);
+    Magnetometer.setUpdateInterval(40000);
+  }
 
-  const _fast = () => { Accelerometer.setUpdateInterval(200);
-                        Gyroscope.setUpdateInterval(200);
-                        Magnetometer.setUpdateInterval(200);
-                      }
+  const _fast = () => {
+    Accelerometer.setUpdateInterval(20000);
+    Gyroscope.setUpdateInterval(20000);
+    Magnetometer.setUpdateInterval(20000);
+  }
+  _fast();
 
   const _subscribe = () => {
     setSubscription(
-      Accelerometer.addListener(acceleroData =>{
+      Accelerometer.addListener(acceleroData => {
         setAccelerometer(acceleroData);
-        //sendDataAccelero(acceleroData);
-        sendData(dataAccelero, "/add_accelerometer");
-      }), 
-      Gyroscope.addListener(gyroscopeData =>{
-        setGyroscope(gyroscopeData);
-        //sendDataGyro(gyroscopeData);
-        sendData(dataGyro, "/add_gyroscope");
+        ctrllFetch.sendData(acceleroData, "/add_accelerometer")
+          .then(data => {
+            //console.log(data)
+          })
+        
       }),
-      Magnetometer.addListener(result => {
-        setMagneto(result);
-        //sendDataMagneto(result);
-        sendData(dataMagneto, "/add_magnetometer");
+
+      Gyroscope.addListener(gyroscopeData => {
+        setGyroscope(gyroscopeData);
+        ctrllFetch.sendData(gyroscopeData, "/add_gyroscope")
+          .then(data => {
+            //console.log(data)
+          })
+      }),
+
+      Magnetometer.addListener(magnetoData => {
+        setMagneto(magnetoData);
+        //console.log("dataMagneto ", magnetoData);
+        ctrllFetch.sendData(magnetoData, "/add_magnetometer")          
       })
+      
     );
   };
 
@@ -64,14 +78,14 @@ export default function App() {
   };
 
   //--------------------- GPS ---------------------
-
+/*
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     _subscribe();
     (async () => {
-      
+
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
         setErrorMsg('Permission to access location was denied');
@@ -91,105 +105,13 @@ export default function App() {
   } else if (location) {
     textGPS = JSON.stringify(location);
   }
+*/
 
- //================== To Server ==================
-  const url = 'http://localhost:8000';
+/*
+      <Text style={styles.text}>GPS</Text>
+      <Text style={styles.paragraph}>{textGPS}</Text>
+ */
 
-  // ------ Accelerometer ------
-  const optionsAccelero = {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: dataAccelero,
-  };
-
-  const sendDataAccelero = async (dataAccelero) => {
-    fetch(url + '/add_accelerometer', optionsAccelero)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error al enviar los datos al servidor');
-        }
-        return response.json();
-    })
-    .then(dataAccelero => {
-        console.log('Datos enviados correctamente:', dataAccelero);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-  };
-
-  // ------ Gyroscope ------
-  const optionsGyro = {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: dataGyro,
-  };
-
-  const sendDataGyro = async (dataGyro) => {
-    fetch(url + '/add_gyroscope', optionsGyro)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error al enviar los datos al servidor');
-        }
-        return response.json();
-    })
-    .then(dataGyro => {
-        console.log('Datos enviados correctamente:', dataGyro);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-  };
-
-  // ------ setMagneto ------
-  const optionsMagneto = {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: dataMagneto,
-  };
-
-  const sendDataMagneto = async (dataMagneto) => {
-    fetch(url + '/add_magnetometer', optionsMagneto)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error al enviar los datos al servidor');
-        }
-        return response.json();
-    })
-    .then(dataMagneto => {
-        console.log('Datos enviados correctamente:', dataMagneto);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-  };
-  
-  //------------ Metodo para enviar de prueba ------------
-  const sendData = async (data, method) => {
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url + method, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-          var json = JSON.parse(xhr.responseText);
-          console.log(json.x + ", " + json.y + ", "+ json.z);
-      }
-    };
-    //console.log(xhr.readyState + " " + xhr.status );
-    xhr.send(data);
-  } 
-
-  /*
-   <Text style={styles.text}>GPS</Text>
-      <Text style={styles.paragraph}>{textGPS}</Text> 
-   */
-  
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Accelerometer: (in gs where 1g = 9.81 m/s^2)</Text>
@@ -197,19 +119,18 @@ export default function App() {
       <Text style={styles.text}>y: {dataAccelero.y}</Text>
       <Text style={styles.text}>z: {dataAccelero.z}</Text>
       <Text style={styles.text}> </Text>
-      <Text style={styles.text}>Gyroscope: </Text>
-      
+
       <Text style={styles.text}>Giroscopio</Text>
       <Text style={styles.text}>x: {dataGyro.x}</Text>
       <Text style={styles.text}>y: {dataGyro.y}</Text>
       <Text style={styles.text}>z: {dataGyro.z}</Text>
+      <Text style={styles.text}> </Text>
 
       <Text style={styles.text}>Magnetometer:</Text>
       <Text style={styles.text}>x: {dataMagneto.x}</Text>
       <Text style={styles.text}>y: {dataMagneto.y}</Text>
-      <Text style={styles.text}>z: {dataMagneto.z}</Text>
+      <Text style={styles.text}>z: {dataMagneto.z}</Text>      
 
-      
       <View style={styles.buttonContainer}>
         <TouchableOpacity onPress={subscription ? _unsubscribe : _subscribe} style={styles.button}>
           <Text>{subscription ? 'On' : 'Off'}</Text>
@@ -220,7 +141,7 @@ export default function App() {
         <TouchableOpacity onPress={_fast} style={styles.button}>
           <Text>Fast</Text>
         </TouchableOpacity>
-      </View>      
+      </View>
     </View>
   );
 }

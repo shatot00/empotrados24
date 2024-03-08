@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from database import crud, models, schemas
 from database.database import SessionLocal, engine
 from fastapi.templating import Jinja2Templates
+from fastapi.middleware.cors import CORSMiddleware
+
 
 import sqlite3
 
@@ -14,6 +16,17 @@ models.Base.metadata.create_all(bind=engine)
 dir = os.path.dirname(__file__)
 #
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 templates = Jinja2Templates(directory="../frontend/templates") # Path to the template folder
 
 def get_db():
@@ -27,41 +40,39 @@ def get_db():
 async def root(request: Request, db: Session = Depends(get_db)):
     records = crud.get_information_accelerometer(db)
     if records:
-        times = [records.time for records in records]
+        time = [str(records.time) for records in records]
         x_values = [records.x for records in records]
         y_values = [records.y for records in records]
         z_values = [records.z for records in records]
 
         db.close()
-        times_sort = sorted(times, reverse=True)
-        return templates.TemplateResponse("accelerometer.html", {"request": request, "times": times_sort, "x_values": x_values, "y_values": y_values, "z_values": z_values})
-
-    return {"message": "Welcome :)"}
-
+        return templates.TemplateResponse("accelerometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
 @app.post("/add_accelerometer")
-async def create_accelerometer(accelerometer: schemas.Accelerometer, db: Session = Depends(get_db)):
+async def add_accelerometer(accelerometer: schemas.Accelerometer, db: Session = Depends(get_db)):
+    
     print(accelerometer)
     crud.add_information_accelerometer(db, accelerometer)
     return "Hola"
 
 @app.post("/add_magnetometer")
-async def create_magnetometer(magnetometer: schemas.Magnetometer, db: Session = Depends(get_db)):
+async def add_magnetometer(magnetometer: schemas.Magnetometer, db: Session = Depends(get_db)):
+    print(magnetometer)
     crud.add_information_magnetometer(db, magnetometer)
-    return "Hola"
+    return "added magnetometer"
 
 @app.post("/add_gps")
-async def create_gps(gps: schemas.GPS, db: Session = Depends(get_db)):
+async def add_gps(gps: schemas.GPS, db: Session = Depends(get_db)):
     crud.add_information_gps(db, gps)
     return "Hola"
 
 @app.post("/add_gyroscope")
-async def create_gyroscope(gyroscope: schemas.Gyroscope, db: Session = Depends(get_db)):
+async def add_gyroscope(gyroscope: schemas.Gyroscope, db: Session = Depends(get_db)):
     crud.add_information_gyroscope(db, gyroscope)
     return "Hola"
 
 @app.post("/add_pedometer")
-async def create_pedometer(pedometer: schemas.Pedometer, db: Session = Depends(get_db)):
+async def add_pedometer(pedometer: schemas.Pedometer, db: Session = Depends(get_db)):
     crud.add_information_pedometer(db, pedometer)
     return "Hola"
 
@@ -71,7 +82,15 @@ async def get_accelerometer(request: Request, db: Session = Depends(get_db)):
 
 @app.get("/magnetometer")
 async def get_magnetometer(request: Request, db: Session = Depends(get_db)):
-    return crud.get_information_magnetometer(db)
+    records = crud.get_information_accelerometer(db)
+    if records:
+        time = [str(records.time) for records in records]
+        x_values = [records.x for records in records]
+        y_values = [records.y for records in records]
+        z_values = [records.z for records in records]
+
+        db.close()
+        return templates.TemplateResponse("magnetometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
 @app.get("/gps")
 async def get_gps(request: Request, db: Session = Depends(get_db)):
@@ -85,11 +104,18 @@ async def get_gps(request: Request, db: Session = Depends(get_db)):
         {"nombre": "Sitio 3", "latitud": 34.0522, "longitud": -118.2437}
     ]
     return templates.TemplateResponse("gps.html", {"request": request, "latitude": latitude, "longitude": longitude, "sitios_visitados": sitios_visitados})
-    return crud.get_information_gps(db)
 
 @app.get("/gyroscope")
-async def get_gyroscope(request: Request, db: Session = Depends(get_db)):
-    return crud.get_information_gyroscope(db)
+async def get_gyroscope(request: Request, db: Session = Depends(get_db)):    
+    records = crud.get_information_accelerometer(db)
+    if records:
+        time = [str(records.time) for records in records]
+        x_values = [records.x for records in records]
+        y_values = [records.y for records in records]
+        z_values = [records.z for records in records]
+
+        db.close()
+        return templates.TemplateResponse("gyroscope.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
 @app.get("/pedometer")
 async def get_pedometer(db: Session = Depends(get_db)):
