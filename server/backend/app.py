@@ -6,9 +6,6 @@ from database.database import SessionLocal, engine
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 
-
-import sqlite3
-
 models.Base.metadata.create_all(bind=engine)
 
 
@@ -34,7 +31,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
 
 @app.get("/")
 async def root(request: Request, db: Session = Depends(get_db)):
