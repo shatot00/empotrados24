@@ -1,47 +1,48 @@
 <!DOCTYPE html>
 <html>
 
-<head> 
+<head>
     
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
-               body {
-                background-color: #f4e9cd;
-                font-family:Georgia, Times, 'Times New Roman', serif, sans-serif;
-        }
+        body {
+         background-color: #f4e9cd;
+         font-family:Georgia, Times, 'Times New Roman', serif, sans-serif;
+ }
 
-        h1 {
-            text-align: center;
-            color: #333;
-        }
+ h1 {
+     text-align: center;
+     color: #333;
+ }
 
-        #graph {
-            width: 100%;
-            height: 500px;
-            margin: 0 auto;
-        }
+ #graph {
+     width: 100%;
+     height: 500px;
+     margin: 0 auto;
+ }
 
-        button.bottom-right {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background-color: #468189;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+ button.bottom-right {
+     position: absolute;
+     bottom: 10px;
+     right: 10px;
+     background-color: #468189;
+     color: #fff;
+     padding: 10px 20px;
+     border: none;
+     cursor: pointer;
+     border-radius: 5px;
+ }
 
-        button.bottom-right:hover {
-            background-color: #555;
-        }
-    </style>
+ button.bottom-right:hover {
+     background-color: #555;
+ }
+</style>
 </head>
 
 <body>
     {% include 'navbar.html' %}
-    <h1>Accelerometer data</h1>
+    <h1>Light sensor data</h1>
+   
     <button onclick="reloadPage()" class="bottom-right">Actualizar Página</button>
     <div id="graph"></div>
 
@@ -87,7 +88,7 @@
 
         // Configurar el diseño del gráfico
         var layout = {
-            
+          
             xaxis: {
                 title: 'Tiempo'
             },
