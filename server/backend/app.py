@@ -36,55 +36,69 @@ def get_db():
     finally:
         db.close()
 
+
 @app.get("/")
 async def root(request: Request, db: Session = Depends(get_db)):
     records = crud.get_information_accelerometer(db)
     if records:
-        times = [str(records.time) for records in records]
+        time = [str(records.time) for records in records]
         x_values = [records.x for records in records]
         y_values = [records.y for records in records]
         z_values = [records.z for records in records]
 
         db.close()
-        times_sort = sorted(times, reverse=True)
-        return templates.TemplateResponse("accelerometer.html", {"request": request, "times": times_sort, "x_values": x_values, "y_values": y_values, "z_values": z_values})
+        return templates.TemplateResponse("accelerometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
-    return {"message": "Welcome :)"}
 
 @app.post("/add_accelerometer")
-async def add_accelerometer(accelerometer: schemas.Accelerometer, db: Session = Depends(get_db)):
-    
-    print(accelerometer)
+async def add_accelerometer(accelerometer: schemas.Accelerometer, db: Session = Depends(get_db)):    
+    #print(accelerometer)
     crud.add_information_accelerometer(db, accelerometer)
-    return "Hola"
+    return "added acceleromete"
+
 
 @app.post("/add_magnetometer")
 async def add_magnetometer(magnetometer: schemas.Magnetometer, db: Session = Depends(get_db)):
+    #print(magnetometer)
     crud.add_information_magnetometer(db, magnetometer)
-    return "Hola"
+    return "added magnetometer"
+
 
 @app.post("/add_gps")
 async def add_gps(gps: schemas.GPS, db: Session = Depends(get_db)):
     crud.add_information_gps(db, gps)
-    return "Hola"
+    return "added gps"
+
 
 @app.post("/add_gyroscope")
 async def add_gyroscope(gyroscope: schemas.Gyroscope, db: Session = Depends(get_db)):
     crud.add_information_gyroscope(db, gyroscope)
-    return "Hola"
+    return "added gyroscope"
 
-@app.post("/add_pedometer")
-async def add_pedometer(pedometer: schemas.Pedometer, db: Session = Depends(get_db)):
-    crud.add_information_pedometer(db, pedometer)
-    return "Hola"
+
+@app.post("/add_lightSensor")
+async def add_lightSensor(lightSensor: schemas.LightSensor, db: Session = Depends(get_db)):
+    crud.add_information_lightSensor(db, lightSensor)
+    return "added lightSensor"
+
 
 @app.get("/accelerometer")
 async def get_accelerometer(request: Request, db: Session = Depends(get_db)):
     return crud.get_information_accelerometer(db)
 
+
 @app.get("/magnetometer")
 async def get_magnetometer(request: Request, db: Session = Depends(get_db)):
-    return crud.get_information_magnetometer(db)
+    records = crud.get_information_accelerometer(db)
+    if records:
+        time = [str(records.time) for records in records]
+        x_values = [records.x for records in records]
+        y_values = [records.y for records in records]
+        z_values = [records.z for records in records]
+
+        db.close()
+        return templates.TemplateResponse("magnetometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
+
 
 @app.get("/gps")
 async def get_gps(request: Request, db: Session = Depends(get_db)):
@@ -98,12 +112,21 @@ async def get_gps(request: Request, db: Session = Depends(get_db)):
         {"nombre": "Sitio 3", "latitud": 34.0522, "longitud": -118.2437}
     ]
     return templates.TemplateResponse("gps.html", {"request": request, "latitude": latitude, "longitude": longitude, "sitios_visitados": sitios_visitados})
-    return crud.get_information_gps(db)
+
 
 @app.get("/gyroscope")
-async def get_gyroscope(request: Request, db: Session = Depends(get_db)):
-    return crud.get_information_gyroscope(db)
+async def get_gyroscope(request: Request, db: Session = Depends(get_db)):    
+    records = crud.get_information_accelerometer(db)
+    if records:
+        time = [str(records.time) for records in records]
+        x_values = [records.x for records in records]
+        y_values = [records.y for records in records]
+        z_values = [records.z for records in records]
 
-@app.get("/pedometer")
-async def get_pedometer(db: Session = Depends(get_db)):
-    return crud.get_information_pedometer(db)
+        db.close()
+        return templates.TemplateResponse("gyroscope.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
+
+
+@app.get("/lightSensor")
+async def get_lightSensor(db: Session = Depends(get_db)):
+    return crud.get_information_lightSensor(db)
