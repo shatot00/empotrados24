@@ -36,18 +36,9 @@ def get_db():
     finally:
         db.close()
 
-
 @app.get("/")
 async def root(request: Request, db: Session = Depends(get_db)):
-    records = crud.get_information_accelerometer(db)
-    if records:
-        time = [str(records.time) for records in records]
-        x_values = [records.x for records in records]
-        y_values = [records.y for records in records]
-        z_values = [records.z for records in records]
-
-        db.close()
-        return templates.TemplateResponse("accelerometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.post("/add_accelerometer")
@@ -84,7 +75,15 @@ async def add_lightSensor(lightSensor: schemas.LightSensor, db: Session = Depend
 
 @app.get("/accelerometer")
 async def get_accelerometer(request: Request, db: Session = Depends(get_db)):
-    return crud.get_information_accelerometer(db)
+    records = crud.get_information_accelerometer(db)
+    if records:
+        time = [str(records.time) for records in records]
+        x_values = [records.x for records in records]
+        y_values = [records.y for records in records]
+        z_values = [records.z for records in records]
+
+        db.close()
+        return templates.TemplateResponse("accelerometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
 
 @app.get("/magnetometer")
@@ -130,3 +129,4 @@ async def get_gyroscope(request: Request, db: Session = Depends(get_db)):
 @app.get("/lightSensor")
 async def get_lightSensor(db: Session = Depends(get_db)):
     return crud.get_information_lightSensor(db)
+

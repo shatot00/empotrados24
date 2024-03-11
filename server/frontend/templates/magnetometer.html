@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Magnetometer data</title>
+    
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         body {
@@ -40,10 +40,10 @@
 </head>
 
 <body>
-    <h1>Generador de Gráficas</h1>
-    <object data="#navbar.html" type="text/html" style="width:100%; height:50px;"></object>
-    <button onclick="reloadPage()">Actualizar Página</button>
-    
+    {% include 'navbar.html' %}
+    <h1>Magnetometer data</h1>
+   
+    <button onclick="reloadPage()" class="bottom-right">Actualizar Página</button>
     <div id="graph"></div>
 
     <script>
@@ -86,9 +86,9 @@
 
         var data = [trace_x, trace_y, trace_z];
 
-    
+       
         var layout = {
-           
+            
             xaxis: {
                 title: 'Tiempo'
             },
@@ -99,7 +99,7 @@
             plot_bgcolor: 'rgba(0,0,0,0)'
         };
 
-    
+        // Crear el gráfico
         Plotly.newPlot('graph', data, layout);
     </script>
 </body>
