@@ -42,8 +42,8 @@
         // Función para inicializar el map
         function initMap() {
 
-            var latitude =  '{{ latitude }}';
-            var longitude =  '{{ longitude }}';
+            var latitude =  JSON.parse('{{ latitude | tojson | safe }}');
+            var longitude =  JSON.parse('{{ longitude | tojson | safe }}');
 
             // Crea un map de Leaflet en el div con id "map"
             var map = L.map('map').setView([latitude, longitude], 12);
@@ -53,18 +53,13 @@
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            // Crea un marcador en la ubicación especificada
-            L.marker([latitude, longitude]).addTo(map)
-                .bindPopup('Ubicación')
-                .openPopup();
-
             // Obtener el historial de sitios visitados
-            var sitios_visitados = JSON.parse('{{ sitios_visitados | tojson | safe }}');
+            var places = JSON.parse('{{ places | tojson | safe }}');
 
             // Iterar sobre cada sitio visitado y agregar un marcador al mapa
-            sitios_visitados.forEach(function(sitio) {
-                L.marker([sitio.latitud, sitio.longitud]).addTo(map)
-                    .bindPopup(sitio.nombre)
+            places.forEach(function(place) {
+                L.marker([place.latitude, place.longitude]).addTo(map)
+                    .bindPopup(place.id)
                     .openPopup();
             });
 
