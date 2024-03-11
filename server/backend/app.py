@@ -76,13 +76,14 @@ async def add_lightSensor(lightSensor: schemas.LightSensor, db: Session = Depend
 async def get_accelerometer(request: Request, db: Session = Depends(get_db)):
 
     records = crud.get_information_accelerometer(db)
+    db.close()
     if records:
         time = [str(records.time) for records in records]
         x_values = [records.x for records in records]
         y_values = [records.y for records in records]
         z_values = [records.z for records in records]
-
-    db.close()
+    else:
+        return HTTPException(status_code=404, detail="No found")
 
     return templates.TemplateResponse("magnetometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
@@ -92,13 +93,12 @@ async def get_accelerometer(request: Request, db: Session = Depends(get_db)):
 async def get_magnetometer(request: Request, db: Session = Depends(get_db)):
 
     records = crud.get_information_magnetometer(db)
+    db.close()
     if records:
         time = [str(records.time) for records in records]
         x_values = [records.x for records in records]
         y_values = [records.y for records in records]
         z_values = [records.z for records in records]
-
-    db.close()
     
     return templates.TemplateResponse("magnetometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
@@ -106,25 +106,29 @@ async def get_magnetometer(request: Request, db: Session = Depends(get_db)):
 @app.get("/gps")
 async def get_gps(request: Request, db: Session = Depends(get_db)):
     records = crud.get_information_gps(db)
-    places = []
-
-    for record in records:
-        places.append({"id": record.id, "latitude": record.latitude, "longitude": record.longitude})
     db.close()
+    places = []
+    if records:
+        for record in records:
+            places.append({"id": record.id, "latitude": record.latitude, "longitude": record.longitude})
 
+    else:
+        return HTTPException(status_code=404, detail="No found")
+    
     return templates.TemplateResponse("gps.html", {"request": request, "places": places})
 
 
 @app.get("/gyroscope")
 async def get_gyroscope(request: Request, db: Session = Depends(get_db)):    
     records = crud.get_information_gyroscope(db)
+    db.close()
     if records:
         time = [str(records.time) for records in records]
         x_values = [records.x for records in records]
         y_values = [records.y for records in records]
         z_values = [records.z for records in records]
-
-    db.close()
+    else:
+        return HTTPException(status_code=404, detail="No found")
 
     return templates.TemplateResponse("gyroscope.html", {"request": request, "time": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
@@ -132,10 +136,11 @@ async def get_gyroscope(request: Request, db: Session = Depends(get_db)):
 @app.get("/lightSensor")
 async def get_lightSensor(request: Request, db: Session = Depends(get_db)):
     records = crud.get_information_lightSensor(db)
+    db.close()
     if records:
         time = [str(records.time) for records in records]
         illuminance_values = [records.illuminance for records in records]
-
-    db.close()
+    else:
+        return HTTPException(status_code=404, detail="No found")
 
     return templates.TemplateResponse("lightSensor.html", {"request": request, "time": time, "illuminance_values": illuminance_values})
