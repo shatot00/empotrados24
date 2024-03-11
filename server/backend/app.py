@@ -79,9 +79,9 @@ async def get_accelerometer(request: Request, db: Session = Depends(get_db)):
         y_values = [records.y for records in records]
         z_values = [records.z for records in records]
     else:
-        return HTTPException(status_code=404, detail="No found")
+        return HTTPException(status_code=404, detail="No data found")
 
-    return templates.TemplateResponse("magnetometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
+    return templates.TemplateResponse("accelerometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
 
 
@@ -96,6 +96,9 @@ async def get_magnetometer(request: Request, db: Session = Depends(get_db)):
         y_values = [records.y for records in records]
         z_values = [records.z for records in records]
     
+    else:
+        return HTTPException(status_code=404, detail="No data found")
+    
     return templates.TemplateResponse("magnetometer.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
 
@@ -109,7 +112,7 @@ async def get_gps(request: Request, db: Session = Depends(get_db)):
             places.append({"id": record.id, "latitude": record.latitude, "longitude": record.longitude})
 
     else:
-        return HTTPException(status_code=404, detail="No found")
+        return HTTPException(status_code=404, detail="No data found")
     
     return templates.TemplateResponse("gps.html", {"request": request, "places": places})
 
@@ -124,9 +127,9 @@ async def get_gyroscope(request: Request, db: Session = Depends(get_db)):
         y_values = [records.y for records in records]
         z_values = [records.z for records in records]
     else:
-        return HTTPException(status_code=404, detail="No found")
+        return HTTPException(status_code=404, detail="No data found")
 
-    return templates.TemplateResponse("gyroscope.html", {"request": request, "time": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
+    return templates.TemplateResponse("gyroscope.html", {"request": request, "times": time, "x_values": x_values, "y_values": y_values, "z_values": z_values})
 
 
 @app.get("/lightSensor")
@@ -137,6 +140,6 @@ async def get_lightSensor(request: Request, db: Session = Depends(get_db)):
         time = [str(records.time) for records in records]
         illuminance_values = [records.illuminance for records in records]
     else:
-        return HTTPException(status_code=404, detail="No found")
+        return HTTPException(status_code=404, detail="No data found")
 
     return templates.TemplateResponse("lightSensor.html", {"request": request, "time": time, "illuminance_values": illuminance_values})

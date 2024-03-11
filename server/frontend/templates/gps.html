@@ -42,8 +42,8 @@
         // Función para inicializar el map
         function initMap() {
 
-            var latitude =  JSON.parse('{{ latitude | tojson | safe }}');
-            var longitude =  JSON.parse('{{ longitude | tojson | safe }}');
+            var latitude =  '{{ latitude }}';
+            var longitude =  '{{ longitude }}';
 
             // Crea un map de Leaflet en el div con id "map"
             var map = L.map('map').setView([latitude, longitude], 12);
