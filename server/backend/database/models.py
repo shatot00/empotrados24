@@ -55,7 +55,6 @@ class GPS(Base):
     __tablename__ = "gps"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
-    time = Column(DateTime, primary_key=False, nullable=False, index=False)
     latitude = Column(Float, primary_key=False, nullable=False, index=False)
     longitude = Column(Float, primary_key=False, nullable=False, index=False)
 
@@ -82,7 +81,7 @@ class Gyroscope(Base):
 
 class LightSensor(Base):
 
-    __tablename__ = "lightSensor"
+    __tablename__ = "lightsensor"
 
     id = Column(Integer, primary_key=True, index=True, nullable=False)
     time = Column(DateTime, primary_key=False, nullable=False, index=False)
