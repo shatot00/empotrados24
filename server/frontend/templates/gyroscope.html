@@ -48,14 +48,14 @@
 
     <script>
         // Obtener los datos pasados desde Python
-        var tiempos = JSON.parse('{{ times | tojson | safe }}');
+        var times = JSON.parse('{{ times | tojson | safe }}');
         var x_values = JSON.parse('{{ x_values | tojson | safe }}');
         var y_values = JSON.parse('{{ y_values | tojson | safe }}');
         var z_values = JSON.parse('{{ z_values | tojson | safe }}');
 
         // Crear los trazos para cada conjunto de datos
         var trace_x = {
-            x: tiempos,
+            x: times,
             y: x_values,
             mode: 'lines',
             name: 'X',
@@ -65,7 +65,7 @@
         };
 
         var trace_y = {
-            x: tiempos,
+            x: times,
             y: y_values,
             mode: 'lines',
             name: 'Y',
@@ -75,7 +75,7 @@
         };
 
         var trace_z = {
-            x: tiempos,
+            x: times,
             y: z_values,
             mode: 'lines',
             name: 'Z',

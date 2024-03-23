@@ -111,7 +111,7 @@ export default function App() {
     textGPS = JSON.stringify(location);
   }
 
-  //--------------------- LightSensor ---------------------
+  //------------------------------------------
 
 
   return (

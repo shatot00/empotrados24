@@ -53,7 +53,12 @@ class Gyroscope(BaseModel):
 
 
 class LightSensor(BaseModel):
-    
+    """
+    Represents a light sensor.
+
+    Attributes:
+        illuminance (int): The illuminance value measured by the sensor.
+    """
     illuminance: int
 
     class ConfigDict:
